@@ -11,7 +11,17 @@
 
 2026 조달청 AI 게임·콘텐츠 공모전 (AI 게임 부문) 출품작
 
+<p align="center"><img src="docs/title.png" width="600" alt="타이틀 화면"></p>
+
 ---
+
+## 게임 화면
+
+| 나라장터 공고와 활동 | 예비가격 추첨과 투찰 |
+|---|---|
+| <img src="docs/hub.png" alt="공고·활동 화면"> | <img src="docs/bid.png" alt="투찰 화면"> |
+| **개찰 결과** — 하한선 아래는 무효, 그 위 최저가가 낙찰 | **엔딩** — 이번 판에 활용한 조달 정책까지 정리 |
+| <img src="docs/result.png" alt="개찰 결과 화면"> | <img src="docs/ending.png" alt="엔딩 화면"> |
 
 ## 게임 소개
 
@@ -62,7 +72,7 @@
 
 - **Claude (Anthropic)**: 게임 기획, 시나리오·대사, 코드 작성, 조달 제도 정리, 밸런스 시뮬레이션
 - 도트 캐릭터와 선풍기 아이콘은 이미지 파일 없이 코드로 직접 그렸어요.
-- 폰트: [Galmuri](https://github.com/quiple/galmuri) (SIL Open Font License)
+- 폰트: [Galmuri](https://github.com/quiple/galmuri) © Lee Minseo, SIL Open Font License 1.1 ([OFL-Galmuri.md](OFL-Galmuri.md)). 인터넷 없이도 똑같이 보이도록 `index.html`에 내장했어요.
 
 등장하는 기관·업체·인물과 2027년 이후 사건은 가상이며, 제도는 게임용으로 단순화했습니다.
 
@@ -71,7 +81,7 @@
 <details>
 <summary>개발 메모</summary>
 
-- `index.html` 한 파일, 빌드·서버 없음. main에 push하면 GitHub Actions(`.github/workflows/pages.yml`)가 Pages로 배포
+- `index.html` 한 파일(폰트 내장, 외부 의존성 없음), 빌드·서버 없음. main에 push하면 GitHub Actions(`.github/workflows/pages.yml`)가 Pages로 배포
 - 저장: 진행 `pps_save`(허브 진입 시 저장), 수집 `pps_col` (localStorage)
 - 하한율 `FR`: 소액·일반 84.245 / 중소경쟁 87.995 / 대형·해외 80.495%. 턴12 일반 +2%p, 턴13 중소경쟁 +2%p
 - 규모 기준(연매출): 2/30/150억. 승급은 직전 1년, 강등은 3년 평균 기준. 졸업유예 6턴
@@ -82,6 +92,6 @@
 - 자금: 첫 바닥 시 창업 지원자금 1.5억, 이후 최근 계약 기반 네트워크론 자동 적용
 - 밸런스(봇 300판): 투자형 플레이 시 엔딩이 대기업 회장님 ~40 / 글로벌 ~20 / 중견기업 ~17 / 혁신 ~11 / 강소기업 장인 ~10%, 최종 품질·기술 ~80
 
-**제출 (마감 2026-11-22)**: 참가신청서 PDF, 개인정보동의서 PDF, 시연영상 MP4(1분 내외·1080p), 실행파일 ZIP(`index.html`) → dnccompany3@daum.net
+**제출 (마감 2026-11-22)**: 참가신청서 PDF, 개인정보동의서 PDF, 시연영상 MP4(1분 내외·1080p), 실행파일 ZIP(`index.html` + `OFL-Galmuri.md`) → dnccompany3@daum.net
 
 </details>
