@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>사장님 낙찰입니다!</title>
+<meta name="description" content="작은 선풍기 공방 사장님의 15년 공공조달 성장기. 2026 조달청 AI 게임·콘텐츠 공모전 출품작">
+<meta property="og:title" content="사장님 낙찰입니다!">
+<meta property="og:description" content="복수예비가격·낙찰하한율을 직접 체험하는 텍스트·도트 조달 시뮬레이션">
+<meta name="theme-color" content="#10131f">
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css">
 <style>
 :root{--bg:#10131f;--panel:#1b2033;--panel2:#252b44;--line:#3a4266;--fg:#ece8d9;--dim:#9aa0b8;--y:#ffd23f;--g:#6ee7a0;--r:#ff6b6b;--b:#6cb6ff;--p:#ff8fc7}
@@ -242,7 +247,7 @@ function help(){render(()=>`<section class="panel"><h2>❓ 게임 방법</h2>
  <h3>매 턴 할 일</h3><p>① <b>나라장터 공고</b> 중 하나에 입찰 (턴당 1회)<br>② <b>활동</b> 2번 (연구개발·품질관리·원자재 구매·김주무관 면담·각종 인증 신청)<br>③ <b>반기 마감</b> → 정산, 돌발 사건 발생</p>
  <h3>입찰 규칙 (실제 나라장터 방식을 단순화)</h3><p>예비가격 15개 중 2개를 고르고 투찰률을 써내요. 예비가격 금액은 개찰 전까지 비공개! 모두가 고른 번호 중 가장 많이 뽑힌 4개의 평균이 <b>예정가격</b>. 예정가격×낙찰하한율 이상이면서 <b>가장 낮은 가격</b>이 낙찰! 너무 낮으면 하한선 미달, 너무 높으면 경쟁에서 밀려요.</p>
  <h3>성장의 딜레마</h3><p>연매출이 커지면 소기업 → 중소기업 → 중견기업 → 대기업. 규모가 줄어드는 건 <b>최근 3년 평균 매출</b>이 기준 아래로 떨어질 때예요. 하지만 중견기업이 되면 <b>중소기업 전용 시장과 혜택을 잃어요</b>. 성장할까, 지킬까?</p>
- <h3>수집</h3><p>엔딩 12종 · 조달도감 · 정책도감을 모아보세요. 💗 김주무관 루트도 있어요.</p>
+ <h3>수집</h3><p>엔딩 14종 · 조달도감 · 정책도감을 모아보세요. 💗 김주무관 루트도 있어요.</p>
  ${B('◀ 돌아가기',title,'pri')}</section>`,false)}
 function collection(tab){render(()=>{const tabs=B('🏆 엔딩',()=>collection('end'),tab==='end'?'on':'')+B('📖 조달도감',()=>collection('dict'),tab==='dict'?'on':'')+B('📘 정책도감',()=>collection('pol'),tab==='pol'?'on':'');
  let body='';
