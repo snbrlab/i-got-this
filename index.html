@@ -467,7 +467,7 @@ const REACT_LOVE={win:['(메신저) 낙찰 봤어요. …축하해요. 이따 �
  streak:['오늘은 제가 사장님 편만 들게요. 공무원 말고, 그냥 저로서요.','세 번 떨어져도 저한텐 이미 1순위예요. …방금 건 못 들은 걸로 해요.']};
 function kimReact(k,ctx={}){const love=(S.romance==='declared'||S.romance==='hidden')&&REACT_LOVE[k];
  return `<br><span style="color:var(--p)">💬 ${kimName()}: "${(l=>typeof l==='function'?l(ctx):l)(pick(love&&Math.random()<.6?REACT_LOVE[k]:REACT[k]))}"</span>`}
-function talkKim(){S.talks=(S.talks||0)+1;
+function talkKim(){S.talks=(S.talks||0)+1;S.contactT=S.turn;
  const unseen=Object.keys(POL).filter(k=>!col.pol[k]),pid=unseen.length?pick(unseen):pick(Object.keys(POL));seePol(pid);
  const w=S.aff>=45&&S.romance!=='friend'?'kimb':'kim';
  // 호감도는 면담 자체가 아니라, 면담 중 생기는 '순간' 이벤트의 선택으로만 쌓인다
@@ -505,7 +505,7 @@ const DATES=[
  ['🏸 퇴근 후 배드민턴','청사 동호회에서 배드민턴 배웠어요. 봐주지 마세요.',[['🏸 진지하게 붙고, 지면 깔끔하게 인정한다',13,'공정한 경쟁 좋네요! 졌으니까 음료는 사장님이 사요.'],['🙃 일부러 져준다',6,'…일부러 진 거 다 보였어요. 그거 담합이에요, 담합.']]],
  ['🏕️ 캠핑','밤하늘 별 보니까 좋네요. 근데 텐트 안이 좀 덥다…',[['🌀 공방 선풍기를 꺼낸다',14,'(조용히 돌아가는 소리) …이래서 학교들이 사장님 선풍기를 사는 거구나.'],['🔥 모닥불 앞에서 다음 입찰 얘기를 꺼낸다',6,'여기까지 와서 입찰 얘기요? 별 보러 온 거잖아요.']]],
  ['📞 밤 11시 통화','(전화) 자려고 누웠는데 목소리 듣고 싶어서요. …방금 그거 취소. 아니, 취소 안 할래요.',[['📱 "저도요. 오늘 하루 어땠어요?"',14,'…별일 없었어요. 근데 이렇게 물어봐 주는 사람이 있다는 게 별일이네요.'],['😴 "내일 개찰 있잖아요, 얼른 자요"',6,'…네. 사장님은 제 일정까지 다 꿰고 있네요. 잘 자요.']]]];
-function dateScene(){S.dateT=S.turn;const [place,line0,opts]=pick(DATES),line=(S.romance==='hidden'&&!/공방|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
+function dateScene(){S.dateT=S.turn;S.contactT=S.turn;const [place,line0,opts]=pick(DATES),line=(S.romance==='hidden'&&!/공방|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
  choose('kimb',`<b>${place}</b><br>${line}`,opts.map(([l,d,reply])=>[l,()=>{S.aff=clamp(S.aff+d,0,100);log(`💗 ${place} 데이트`);S.dateSeen=S.dateSeen||[];if(!S.dateSeen.includes(place))S.dateSeen.push(place);if(S.dateSeen.length>=5)ach('dates');
   const after=()=>{if(S.romance==='hidden'&&Math.random()<.35){S.hiddenRisk=(S.hiddenRisk||0)+.05;return say([['sys','📸 찰칵… 어디선가 셔터 소리가 들린 것 같아요. (감사 위험 증가)']],romanceCheck)}romanceCheck()};
   say([['kims',reply]],after)},'pink']))}
@@ -521,6 +521,8 @@ function romanceCheck(){
 // ---------- 정산 ----------
 function settle(){const m=[];
  if(S.masPause>0){S.masPause--;m.push("🛒 쇼핑몰 계약 갱신 결렬로 이번 반기 주문이 없어요")}else if(S.mas){const r=.3*(1+S.q/100)*(.5+S.rep/100)*(S.excellent?1.5:1)*(S.tier>=2?3:1)*(S.turn>=17&&!S.green?.5:1)*(S.recT>0?.6:1);const mm=S.masM||.25;S.halfRev+=r;S.cash+=r*mm;m.push(`🛒 종합쇼핑몰 주문 ${fmt(r)} → 이익 ${fmt(r*mm)}`)}
+ // 연락이 뜸하면 호감이 식음 (첫 만남 이후, 청혼 전까지, 최소 15)
+ if(S.spark&&S.romance!=="friend"&&S.affStage<4&&S.contactT!==S.turn&&S.aff>15){S.aff=Math.max(15,S.aff-4);m.push("💗 "+kimName()+"과 연락이 뜸했어요… 호감 -4")}
  const oh=TIER[S.tier].over;S.cash-=oh;m.push(`🏢 고정비 -${fmt(oh)}`);
  // 설비·기술 노후화: 꾸준히 투자하지 않으면 품질·기술이 서서히 떨어짐
  S.q=clamp(S.q-1,0,100);S.t=clamp(S.t-1,0,100);m.push("🔧 설비·기술 노후화 — 품질 -1, 기술 -1");
