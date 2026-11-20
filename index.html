@@ -247,7 +247,7 @@ function help(){render(()=>`<section class="panel"><h2>❓ 게임 방법</h2>
  <p>🌀 당신은 작은 선풍기 공방 사장님. <b>2020년부터 2034년까지(30턴, 1턴=반기)</b> 공공조달로 회사를 키우세요.</p>
  <h3>매 턴 할 일</h3><p>① <b>나라장터 공고</b> 중 하나에 입찰 (턴당 1회)<br>② <b>활동</b> 2번 (연구개발·품질관리·원자재 구매·김주무관 면담·각종 인증 신청)<br>③ <b>반기 마감</b> → 정산, 돌발 사건 발생</p>
  <h3>입찰 규칙 (실제 나라장터 방식을 단순화)</h3><p>예비가격 15개 중 2개를 고르고 투찰률을 써내요. 예비가격 금액은 개찰 전까지 비공개! 모두가 고른 번호 중 가장 많이 뽑힌 4개의 평균이 <b>예정가격</b>. 예정가격×낙찰하한율 이상이면서 <b>가장 낮은 가격</b>이 낙찰! 너무 낮으면 하한선 미달, 너무 높으면 경쟁에서 밀려요.</p>
- <h3>성장의 딜레마</h3><p>연매출이 커지면 소기업 → 중소기업 → 중견기업 → 대기업. 규모가 줄어드는 건 <b>최근 3년 평균 매출</b>이 기준 아래로 떨어질 때예요. 하지만 중견기업이 되면 <b>중소기업 전용 시장과 혜택을 잃어요</b>. 성장할까, 지킬까?</p>
+ <h3>성장의 딜레마</h3><p>연매출이 커지면 소기업 → 중소기업 → 중견기업 → 대기업. 규모가 줄어드는 건 <b>최근 3년 평균 매출</b>이 기준 아래로 떨어질 때예요. 설비와 기술은 매 반기 조금씩 낡으니 꾸준히 투자하세요! 하지만 중견기업이 되면 <b>중소기업 전용 시장과 혜택을 잃어요</b>. 성장할까, 지킬까?</p>
  <h3>수집</h3><p>엔딩 14종 · 조달도감 · 정책도감을 모아보세요. 💗 김주무관 루트도 있어요.</p>
  ${B('◀ 돌아가기',title,'pri')}</section>`,false)}
 function collection(tab){render(()=>{const tabs=B('🏆 엔딩',()=>collection('end'),tab==='end'?'on':'')+B('📖 조달도감',()=>collection('dict'),tab==='dict'?'on':'')+B('📘 정책도감',()=>collection('pol'),tab==='pol'?'on':'');
@@ -368,15 +368,15 @@ function resolveBid(collude){const c=S.cur,n=c.n,cnt=Array(15).fill(0);
 function estCost(n){const units=Math.ceil(n.base*30),use=Math.min(S.stock,units);return {units,use,buy:(units-use)*.01*S.mat/100,labor:n.base*.4*(1-S.t/330),saved:use*.01*S.mat/100}}
 function contract(n,price){const sp=NT[n.type]||NT.general,{use,buy,labor,saved}=estCost(n);
  S.stock-=use;const fail=Math.random()<clamp((sp.diff-S.q)/150,0,.4),pen=fail?price*.1:0;
- const net=price-labor-buy-pen;S.cash+=net;S.halfRev+=price;S.wins++;S.total+=price;S.lastContract=price;S.rep=clamp(S.rep+(fail?-8:3),0,100);
+ const net=price-labor-buy-pen;S.cash+=net;S.halfRev+=price;S.wins++;S.total+=price;if(n.type==='overseas')S.ow=(S.ow||0)+1;S.lastContract=price;S.rep=clamp(S.rep+(fail?-8:3),0,100);
  dict(fail?'지체상금':'납품검사');log(`${n.item} 계약 ${fmt(price)} → 순이익 ${fmt(net)}`);
  return `🎉 <b>${n.item}</b> 계약 ${fmt(price)}!<br><small>인건비 -${fmt(labor)} · 원자재 ${use?`재고 ${use}개 사용 + `:''}부족분 시세 구매 -${fmt(buy)}${fail?` · <span style="color:var(--r)">납품 지연 지체상금 -${fmt(pen)}</span>`:' · 납품검사 합격 ✅'}</small><br>순이익 <b>${fmt(net)}</b>${use?`<br>📦 재고 덕분에 원자재 <b>${fmt(saved)}</b> 절약! (지금 시세로 샀다면 그만큼 더 들었어요)`:''}`}
 
 // ---------- 활동 ----------
 const cst=k=>k*[1,2.5,12,40][S.tier]; // 규모별 비용 배수
 const ACTS=[
- {n:'🔬 연구개발',d:'기술력↑ (원가 절감·혁신제품)',c:()=>cst(.06),run(){const g=Math.round((100-S.t)*.12)+2;S.t=clamp(S.t+g,0,100);return `기술력 +${g}`}},
- {n:'🛠️ 품질관리',d:'품질↑ (적격심사·납품검사)',c:()=>cst(.06),run(){const g=Math.round((100-S.q)*.12)+2;S.q=clamp(S.q+g,0,100);return `품질 +${g}`}},
+ {n:'🔬 연구개발',d:'기술력↑ (원가 절감·혁신제품)',c:()=>cst(.06),run(){const g=Math.round((100-S.t)*.1)+1;S.t=clamp(S.t+g,0,100);return `기술력 +${g}`}},
+ {n:'🛠️ 품질관리',d:'품질↑ (적격심사·납품검사)',c:()=>cst(.06),run(){const g=Math.round((100-S.q)*.1)+1;S.q=clamp(S.q+g,0,100);return `품질 +${g}`}},
  {n:'🗣️ 영업·홍보',d:'신뢰↑',c:()=>cst(.04),run(){S.rep=clamp(S.rep+8,0,100);return '신뢰 +8'}},
  {n:'📦 원자재(구리) 구매',d:()=>`${TIER[S.tier].buy}개 · 지수 ${Math.round(S.mat)} ${S.mat<95?'(싸다! 쟁여두기 좋아요)':S.mat>115?'(비싸요…)':'(보통)'} · 계약 때 재고부터 써요`,c:()=>TIER[S.tier].buy*.01*S.mat/100,run(){S.stock+=TIER[S.tier].buy;return `원자재 +${TIER[S.tier].buy}`}},
  {n:'🏛️ 비축물자 구매',d:()=>`${TIER[S.tier].buy}개 · 시세의 80% · 급등기 원가 방어!`,show:()=>S.release>0,lock:()=>!isSME()&&'중소기업만 가능',c:()=>TIER[S.tier].buy*.01*S.mat/100*.8,run(){S.stock+=TIER[S.tier].buy;usePol('stockpile');dict('비축물자');return `조달청 비축물자 ${TIER[S.tier].buy}개를 싸게 구입!`}},
@@ -464,6 +464,8 @@ function romanceCheck(){
 function settle(){const m=[];
  if(S.mas){const r=.3*(1+S.q/100)*(S.excellent?1.5:1)*(S.tier>=2?3:1)*(S.turn>=22&&!S.green?.5:1)*(S.recT>0?.6:1);S.halfRev+=r;S.cash+=r*.25;m.push(`🛒 종합쇼핑몰 주문 ${fmt(r)} → 이익 ${fmt(r*.25)}`)}
  const oh=TIER[S.tier].over;S.cash-=oh;m.push(`🏢 고정비 -${fmt(oh)}`);
+ // 설비·기술 노후화: 꾸준히 투자하지 않으면 품질·기술이 서서히 떨어짐
+ S.q=clamp(S.q-1,0,100);S.t=clamp(S.t-1,0,100);m.push("🔧 설비·기술 노후화 — 품질 -1, 기술 -1");
  S.mat=clamp(S.mat+(100-S.mat)*.15+R(-8,8),50,260);S.matHist.push(S.mat);if(S.release>0)S.release--;
  const boost=S.aiAudit?1.8:1;
  // 입찰참가자격 제한은 위반행위 종료 후 5년(=10턴)이 지나면 처분 불가 (국가계약법 제27조 제4항)
@@ -558,7 +560,8 @@ const RANDOM=[
 
 // ---------- 엔딩 ----------
 function finalEnding(){let id='ordinary';
- if(S.tier===3&&S.global)id='global';else if(S.innov&&S.t>=85)id='innovation';else if(S.tier===3)id='chaebol';else if(S.tier<=1&&S.excellent&&S.mas)id='artisan';else if(S.tier===2)id='midsize';
+ // 엔딩 규모는 최고 도달 규모 기준(말기 경기침체로 강등돼도 유지), 글로벌은 해외 낙찰 4건 이상
+ const tm=Math.max(S.tier,S.tierMax||0);if(tm===3&&(S.ow||0)>=4)id='global';else if(tm===3)id='chaebol';else if(S.innov&&S.t>=85)id='innovation';else if(S.tier<=1&&S.excellent&&S.mas)id='artisan';else if(S.tier===2)id='midsize';
  ending(id)}
 function ending(id){const ids=[id];
  if(!ENDS[id].bad){if(S.romance==='declared'&&S.aff>=100)ids.push('couple');if(S.integ>=90&&!S.collusion&&!S.disguise)ids.push('clean');if(S.collusion&&!S.lenient&&(S.collTurns||[]).every(t=>S.turn-t>=10))ids.push('escaped');if(S.lenient)ids.push('lenient')}
