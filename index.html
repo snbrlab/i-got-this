@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>사장님 낙찰입니다!</title>
-<meta name="description" content="작은 선풍기 공방 사장님의 15년 공공조달 성장기. 2026 조달청 AI 게임·콘텐츠 공모전 출품작">
+<meta name="description" content="작은 선풍기 공방 사장님의 10년 공공조달 성장기. 2026 조달청 AI 게임·콘텐츠 공모전 출품작">
 <meta property="og:title" content="사장님 낙찰입니다!">
 <meta property="og:description" content="복수예비가격·낙찰하한율을 직접 체험하는 텍스트·도트 조달 시뮬레이션">
 <meta name="theme-color" content="#10131f">
@@ -97,7 +97,7 @@ button.start{font-size:20px;padding:12px 30px;text-align:center;animation:blink 
 const R=(a,b)=>a+Math.random()*(b-a), RI=(a,b)=>Math.floor(R(a,b+1)), pick=a=>a[Math.floor(Math.random()*a.length)];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
-const TURNS=30;
+const TURNS=20;
 // 낙찰하한율(물품 적격심사, 게임용 단순화): 2026년 상반기 일반 물품 +2%p, 하반기 중소기업자간 경쟁제품 +2%p (실제 2026.5·2026.7 상향)
 const FR={small:.84245,general:.84245,sme:.87995,large:.80495,overseas:.80495};
 const fr=t=>FR[t]+((t==='sme'?S.turn>=13:S.turn>=12)?.02:0);
@@ -127,8 +127,8 @@ function sprite(k){if(sprCache[k])return sprCache[k];const s=SPR[k],cv=document.
  return sprCache[k]=cv.toDataURL()}
 
 // ---------- 데이터 ----------
-const TIER=[{n:'소기업',e:'🔧',over:.04,buy:30},{n:'중소기업',e:'🏭',over:.15,buy:100},{n:'중견기업',e:'🏢',over:1,buy:600},{n:'대기업',e:'🏙️',over:4,buy:2000}];
-const TH=[0,2,30,150]; // 연매출(억) 기준 — 게임용 단순화
+const TIER=[{n:'소기업',e:'🔧',over:0.04,buy:30},{n:'중소기업',e:'🏭',over:0.1,buy:100},{n:'중견기업',e:'🏢',over:0.6,buy:600},{n:'대기업',e:'🏙️',over:2.5,buy:2000}];
+const TH=[0,2,20,100]; // 연매출(억) 기준 — 게임용 단순화
 const NT={small:{n:'소액',b:[.3,1],c:[3,6],diff:15,qReq:0,cls:''},sme:{n:'중소기업자간 경쟁제품',b:[1,5],c:[6,10],diff:30,qReq:25,cls:'g'},general:{n:'일반경쟁',b:[3,15],c:[8,14],diff:45,qReq:35,cls:'b'},large:{n:'대형 일괄',b:[20,80],c:[4,7],diff:60,qReq:50,cls:'r'},overseas:{n:'해외조달',b:[50,200],c:[3,5],diff:70,qReq:60,cls:'p'}};
 const ITEMS={small:['교실 벽걸이 선풍기','민원실 스탠드 선풍기','경로당 선풍기','작은도서관 서큘레이터','보건소 탁상 선풍기'],sme:['초등학교 천장형 선풍기 일괄','시청 사무실 서큘레이터','도서관 공기순환기','군 생활관 벽걸이 선풍기','무더위쉼터 선풍기'],general:['국립대 강의실 실링팬','공공청사 공기순환 설비','병원 병동 저소음 선풍기','체육관 대형 산업용 팬'],large:['신청사 송풍 설비 일괄','국립대 기숙사 냉방 보조 팬','지하철역 대형 송풍기','공공도서관 신관 실링팬'],overseas:['🇻🇳 베트남 학교 교실 선풍기','🇺🇳 국제기구 난민캠프 태양광 선풍기','🇰🇪 케냐 보건소 송풍기','🇵🇭 필리핀 재난 대피소 선풍기']};
 const PLACES=['한빛시','푸른군','은하구','바다시','솔내군','가람시','별빛시'], AGS=['초등학교','시청','국립대학교','보건소','교육청','구립도서관','공단','사단'];
@@ -197,7 +197,7 @@ const ENDS={
 
 // ---------- 상태 ----------
 let S=null;
-function newGame(name){S={name:name||'시원공방',turn:0,dpc:false,cash:2,q:20,t:15,integ:70,rep:20,aff:0,affStage:0,romance:null,stock:0,mat:100,matHist:[100],release:0,rev:[],halfRev:0,tier:0,grace:0,graceUsed:false,disguise:false,warned:false,wins:0,total:0,mas:false,excellent:false,innov:false,global:false,green:false,collusion:0,aiAudit:false,innovReq:75,recT:0,polUsed:{},notices:[],ap:2,bidDone:false,log:[]}}
+function newGame(name){S={name:name||'시원공방',turn:0,dpc:false,cash:2,q:25,t:20,integ:70,rep:20,aff:0,affStage:0,romance:null,stock:0,mat:100,matHist:[100],release:0,rev:[],halfRev:0,tier:0,grace:0,graceUsed:false,disguise:false,warned:false,wins:0,total:0,mas:false,excellent:false,innov:false,global:false,green:false,collusion:0,aiAudit:false,innovReq:75,recT:0,polUsed:{},notices:[],ap:2,bidDone:false,log:[]}}
 const isSME=()=>S.tier<=1||S.grace>0||S.disguise;
 // 적격심사 점수 = 품질 + 신인도 가점(신뢰÷10, 최대 +10)
 const qScore=()=>Math.round(S.q+S.rep/10);
@@ -247,7 +247,7 @@ function title(){S=null;const sv=store.get('pps_save',null),cnt=(o,t)=>[Object.k
  render(()=>`<div class="title"><div class="bubble">사장님, 낙찰입니다!</div>
  <div class="sprites"><img src="${sprite('me')}" alt="사장"><img src="${sprite('kim')}" alt="김주무관"><img src="${sprite('rival')}" alt="박사장"></div>
  <h1><img class="fan" src="${fanImg()}" alt="">사장님 낙찰입니다!<img class="fan" src="${fanImg()}" alt=""></h1>
- <p style="color:var(--p);font-size:17px">여러분 저 됐어요 — 낙찰됐어요!!</p><p class="dim">작은 선풍기 공방 사장님의 15년 공공조달 성장기</p>
+ <p style="color:var(--p);font-size:17px">여러분 저 됐어요 — 낙찰됐어요!!</p><p class="dim">작은 선풍기 공방 사장님의 10년 공공조달 성장기</p>
  <p>${B('▶ 게임 시작 ◀',nameStep,'pri start')}</p>
  <p>${sv?B('⏯ 이어하기',()=>{S=sv;startTurn(true)}):''} ${B('📚 도감',()=>collection('end'))} ${B('❓ 게임 방법',help)}</p>
  <div class="progs">${prog('🏆 엔딩',cnt(col.end,ENDS))}${prog('📖 조달도감',cnt(col.dict,DICT))}${prog('📘 정책도감',cnt(col.pol,POL))}</div></div>
@@ -256,7 +256,7 @@ function nameStep(){const go=()=>{newGame(document.getElementById('nm').value.tr
  render(()=>dlg('sys','📝 <b>나라장터 업체 등록</b><br>사장님 회사 이름을 입력해 주세요.<br><input id="nm" class="nm-in" maxlength="10" value="시원공방">',B('등록하기 ▶',go,'pri')+' '+B('◀ 처음으로',title)),false);
  const el=document.getElementById('nm');el.focus();el.select();el.onkeydown=e=>{if(e.key==='Enter')go()}}
 function help(){render(()=>`<section class="panel"><h2>❓ 게임 방법</h2>
- <p>🌀 당신은 작은 선풍기 공방 사장님. <b>2020년부터 2034년까지(30턴, 1턴=반기)</b> 공공조달로 회사를 키우세요.</p>
+ <p>🌀 당신은 작은 선풍기 공방 사장님. <b>2020년부터 2029년까지(20턴, 1턴=반기)</b> 공공조달로 회사를 키우세요.</p>
  <h3>매 턴 할 일</h3><p>① <b>나라장터 공고</b> 중 하나에 입찰 (턴당 1회)<br>② <b>활동</b> 2번 (연구개발·품질관리·원자재 구매·김주무관 면담·각종 인증 신청)<br>③ <b>반기 마감</b> → 정산, 돌발 사건 발생</p>
  <h3>입찰 규칙 (실제 나라장터 방식을 단순화)</h3><p>예비가격 15개 중 2개를 고르고 투찰률을 써내요. 예비가격 금액은 개찰 전까지 비공개! 모두가 고른 번호 중 가장 많이 뽑힌 4개의 평균이 <b>예정가격</b>. 예정가격×낙찰하한율 이상이면서 <b>가장 낮은 가격</b>이 낙찰! 너무 낮으면 하한선 미달, 너무 높으면 경쟁에서 밀려요.</p>
  <h3>성장의 딜레마</h3><p>연매출이 커지면 소기업 → 중소기업 → 중견기업 → 대기업. 규모가 줄어드는 건 <b>최근 3년 평균 매출</b>이 기준 아래로 떨어질 때예요. 설비와 기술은 매 반기 조금씩 낡으니 꾸준히 투자하세요! 하지만 중견기업이 되면 <b>중소기업 전용 시장과 혜택을 잃어요</b>. 성장할까, 지킬까?</p>
@@ -304,7 +304,7 @@ function hub(){store.set('pps_save',S);rerender=()=>render(()=>`
  <section class="panel"><h2>🧰 활동 <small>(⚡ ${S.ap}회 남음)</small></h2><div class="acts">${ACTS.filter(a=>!a.show||a.show()).map(actBtn).join('')}</div></section>
  <p style="text-align:right">${B('반기 마감 ▶',settle,'pri')}</p>`);rerender()}
 
-function elig(n){if(S.banT>0)return `입찰참가자격 제한 중 (${S.banT}턴)`;if(S.stopT>0)return `조달청 거래정지 중 (${S.stopT}턴)`;if(n.type==='sme'&&!isSME())return '중소기업만 참가 가능';if(n.type==='sme'&&S.dpc===false)return '직접생산확인 필요 (활동에서 신청)';if(n.type==='general'&&S.wins<1)return '납품실적 1건 이상';if(n.type==='large'&&S.total<25)return '누적 계약실적 25억 이상';if(n.type==='overseas'&&!S.global)return '해외조달 진출 필요';return null}
+function elig(n){if(S.banT>0)return `입찰참가자격 제한 중 (${S.banT}턴)`;if(S.stopT>0)return `조달청 거래정지 중 (${S.stopT}턴)`;if(n.type==='sme'&&!isSME())return '중소기업만 참가 가능';if(n.type==='sme'&&S.dpc===false)return '직접생산확인 필요 (활동에서 신청)';if(n.type==='general'&&S.wins<1)return '납품실적 1건 이상';if(n.type==='large'&&S.total<15)return '누적 계약실적 15억 이상';if(n.type==='overseas'&&!S.global)return '해외조달 진출 필요';return null}
 function noticeCard(n,i){const sp=NT[n.type],why=elig(n),e=estCost(n),units=e.units,price=n.suui?n.base*.9:n.base*(fr(n.type)+.006),prof=price-e.labor-e.buy;
  return `<div class="card ${n.done?'done':''}"><span class="badge ${sp.cls}">${n.suui?'소액 수의계약':sp.n}</span><div class="t">${n.item}</div><small>${n.ag} · 기초금액 <b>${fmt(n.base)}</b><br>경쟁 약 ${n.comp}개사 · 하한율 ${frp(n.type)}<br>적격심사 ${sp.qReq}점+ <span class="dim">(내 점수 ${qScore()})</span>${(()=>{const r=execRisk(n.type);return r.term>0?`<br><span style="color:var(--r)">⚠️ 품질 부족! 계약 해지 위험 ${Math.round(r.term*100)}%</span>`:r.late>0?`<br><span style="color:var(--y)">⚠️ 납품 지연 위험 ${Math.round(r.late*100)}%</span>`:""})()}<br>🔶 원자재(구리) ${units}개 필요 → ${e.use?`재고 ${e.use}개 + `:''}${units-e.use?`부족분 시세 ${fmt(e.buy)}`:'전부 재고로!'}<br>💰 예상 이익 <b style="color:${prof<0?'var(--r)':'var(--g)'}">${fmt(prof)}</b> <span class="dim">(${n.suui?'수의계약':'하한율+0.6% 낙찰 시'})</span></small><br>
  ${n.done?'<small>마감</small>':S.bidDone?'':why?`<small style="color:var(--r)">🔒 ${why}</small>`:n.suui?B('🤝 수의계약 체결',()=>suui(i),'pri'):B('📨 입찰 참여',()=>openBid(i),'pri')}</div>`}
@@ -393,12 +393,12 @@ function contract(n,price){const sp=NT[n.type]||NT.general,{use,buy,labor,saved}
  return `🎉 <b>${n.item}</b> 계약 ${fmt(price)}!<br><small>인건비 -${fmt(labor)} · 원자재 ${use?`재고 ${use}개 사용 + `:''}${buy>0?`부족분 시세 구매 -${fmt(buy)}`:"전부 재고로 해결"}${fail?` · <span style="color:var(--r)">납품 지연 지체상금 -${fmt(pen)}</span>`:' · 납품검사 합격 ✅'}</small><br>순이익 <b>${fmt(net)}</b>${use?`<br>📦 재고 덕분에 원자재 <b>${fmt(saved)}</b> 절약! (지금 시세로 샀다면 그만큼 더 들었어요)`:''}`}
 
 // ---------- 활동 ----------
-const cst=k=>k*[1,2.5,12,40][S.tier]; // 규모별 비용 배수
+const cst=k=>k*[1,2,7,20][S.tier]; // 규모별 비용 배수
 // MAS 단가 협상 성공률: 품질(원가·품질 근거)과 신뢰(이행 실적)
 const negoP=()=>clamp((S.q*.5+S.rep*.4)/100,.15,.85);
 const ACTS=[
- {n:'🔬 연구개발',d:'기술력↑ (원가 절감·혁신제품)',c:()=>cst(.06),run(){const g=Math.round((100-S.t)*.1)+1;S.t=clamp(S.t+g,0,100);return `기술력 +${g}`}},
- {n:'🛠️ 품질관리',d:'품질↑ (적격심사·납품검사)',c:()=>cst(.06),run(){const g=Math.round((100-S.q)*.1)+1;S.q=clamp(S.q+g,0,100);return `품질 +${g}`}},
+ {n:'🔬 연구개발',d:'기술력↑ (원가 절감·혁신제품)',c:()=>cst(.06),run(){const g=Math.round((100-S.t)*0.15)+1.5;S.t=clamp(S.t+g,0,100);return `기술력 +${g}`}},
+ {n:'🛠️ 품질관리',d:'품질↑ (적격심사·납품검사)',c:()=>cst(.06),run(){const g=Math.round((100-S.q)*0.15)+1.5;S.q=clamp(S.q+g,0,100);return `품질 +${g}`}},
  {n:'🏭 직접생산확인 신청',d:'공장 실사 → 중소기업자간 경쟁제품 참가 자격',show:()=>S.dpc===false,lock:()=>!isSME()?'중소기업만 가능':S.q<25&&'실사 기준 품질 25',c:()=>cst(.03),run(){S.dpc=true;usePol('direct');dict('직접생산확인');return '🏭 공장 실사 통과! 직접 생산하는 업체로 확인됐어요. 이제 <b>중소기업자간 경쟁제품</b> 공고에 참가할 수 있어요.'}},
  {n:'📦 원자재(구리) 구매',d:()=>`${TIER[S.tier].buy}개 · 지수 ${Math.round(S.mat)} ${S.mat<95?'(싸다! 쟁여두기 좋아요)':S.mat>115?'(비싸요…)':'(보통)'} · 계약 때 재고부터 써요`,c:()=>TIER[S.tier].buy*.01*S.mat/100,run(){S.stock+=TIER[S.tier].buy;return `원자재 +${TIER[S.tier].buy}`}},
  {n:'🏛️ 비축물자 구매',d:()=>`${TIER[S.tier].buy}개 · 시세의 80% · 급등기 원가 방어!`,show:()=>S.release>0,lock:()=>!isSME()&&'중소기업만 가능',c:()=>TIER[S.tier].buy*.01*S.mat/100*.8,run(){S.stock+=TIER[S.tier].buy;usePol('stockpile');dict('비축물자');return `조달청 비축물자 ${TIER[S.tier].buy}개를 싸게 구입!`}},
@@ -496,7 +496,7 @@ function romanceCheck(){
 
 // ---------- 정산 ----------
 function settle(){const m=[];
- if(S.masPause>0){S.masPause--;m.push("🛒 쇼핑몰 계약 갱신 결렬로 이번 반기 주문이 없어요")}else if(S.mas){const r=.3*(1+S.q/100)*(.5+S.rep/100)*(S.excellent?1.5:1)*(S.tier>=2?3:1)*(S.turn>=22&&!S.green?.5:1)*(S.recT>0?.6:1);const mm=S.masM||.25;S.halfRev+=r;S.cash+=r*mm;m.push(`🛒 종합쇼핑몰 주문 ${fmt(r)} → 이익 ${fmt(r*mm)}`)}
+ if(S.masPause>0){S.masPause--;m.push("🛒 쇼핑몰 계약 갱신 결렬로 이번 반기 주문이 없어요")}else if(S.mas){const r=.3*(1+S.q/100)*(.5+S.rep/100)*(S.excellent?1.5:1)*(S.tier>=2?3:1)*(S.turn>=17&&!S.green?.5:1)*(S.recT>0?.6:1);const mm=S.masM||.25;S.halfRev+=r;S.cash+=r*mm;m.push(`🛒 종합쇼핑몰 주문 ${fmt(r)} → 이익 ${fmt(r*mm)}`)}
  const oh=TIER[S.tier].over;S.cash-=oh;m.push(`🏢 고정비 -${fmt(oh)}`);
  // 설비·기술 노후화: 꾸준히 투자하지 않으면 품질·기술이 서서히 떨어짐
  S.q=clamp(S.q-1,0,100);S.t=clamp(S.t-1,0,100);m.push("🔧 설비·기술 노후화 — 품질 -1, 기술 -1");
@@ -567,21 +567,17 @@ const FIXED={
   ['🎁 동네 경로당에 기부한다',()=>{S.cash-=cst(.05);S.integ=clamp(S.integ+8,0,100);S.rep=clamp(S.rep+8,0,100);say([['sys','따뜻한(?) 기부로 시원한 여름! 청렴 +8, 신뢰 +8']],nx)}]])(next),
  10:ev('공정조달 AI 감시 강화','🤖','조달청이 입찰 데이터 분석을 고도화했어요. 담합·위장 중소기업 적발 확률이 크게 올라요!',()=>{S.aiAudit=true;seePol('fair')}),
  14:ev('[가상] 글로벌 공급망 위기','🌐','해상 물류가 마비돼 원자재 값이 급등! 조달청이 비축물자를 3턴간 방출해요.',()=>{S.mat*=1.4;S.release=3}),
- 18:next=>ev('[가상] 초대형 태풍','🌀','태풍으로 학교와 대피소가 침수됐어요. 젖은 시설을 말릴 대형 송풍기가 긴급히 필요해요.',()=>dict('긴급조달'),nx=>[
-  ['🚛 대형 송풍기 긴급 공급',()=>{usePol('emergency');const b=3*(1+S.tier*3);const r=contract({type:'general',item:'재난복구 대형 송풍기',base:b},b*.95);say([['sys',r]],nx)},'pri'],
-  ['🎁 대피소에 선풍기를 기부한다',()=>{S.cash-=cst(.2);S.integ=clamp(S.integ+10,0,100);S.rep=clamp(S.rep+10,0,100);say([['sys','따뜻한 기부 소식이 퍼졌어요. 청렴 +10, 신뢰 +10']],nx)}]])(next),
- 22:next=>ev('[가상] 녹색조달 의무화','🌱','공공기관은 이제 에너지효율 1등급·친환경 인증 제품을 우선 구매해요. 친환경이 아니면 쇼핑몰 매출이 반토막!',()=>dict('녹색제품'),nx=>S.t>=60?[['🌱 이미 친환경 공정 완비! (기술 60+)',()=>{S.green=true;usePol('green');nx()},'pri']]:[
+ 17:next=>ev('[가상] 녹색조달 의무화','🌱','공공기관은 이제 에너지효율 1등급·친환경 인증 제품을 우선 구매해요. 친환경이 아니면 쇼핑몰 매출이 반토막!',()=>dict('녹색제품'),nx=>S.t>=60?[['🌱 이미 친환경 공정 완비! (기술 60+)',()=>{S.green=true;usePol('green');nx()},'pri']]:[
   [`🌱 친환경 공정 전환 (${fmt(cst(.5))})`,()=>{S.cash-=cst(.5);S.green=true;usePol('green');nx()},'pri'],['😓 버틴다',nx]])(next),
  12:ev('물품 낙찰하한율 2%p 상향','📏','저가 덤핑을 막고 제값을 받도록 물품 적격심사 낙찰하한율이 2%p 올랐어요. (소액·일반 84.245% → 86.245% 등)<br><small>※ 실제로 2026년 5월 시행됐어요.</small>',()=>dict('낙찰하한율')),
  13:ev('중소기업 경쟁제품 하한율 상향','📏','중소기업자간 경쟁 물품의 낙찰하한율도 87.995% → <b>89.995%</b>로 올랐어요. 중소기업이 제값 받는 시장!<br><small>※ 실제로 2026년 7월 27일부터 적용됐어요.</small>',()=>seePol('sme_comp')),
  15:ev('[가상] 조달물자 품질관리 강화','🔎','조달청이 납품 현장 <b>불시점검</b>을 늘려요! 앞으로 납품한 반기에는 점검이 나올 수 있어요. 품질이 낮으면 신뢰가 깎이고, 심하면 <b>거래정지</b>예요.',()=>{S.inspect=true;seePol('quality')}),
  16:next=>{say([['news','<b>📋 조달청 인사 소식</b><br>김주무관이 6급으로 승진했어요!'],['kims','사장님! 저 6급 됐어요. 호칭은 그대로 주무관인데… 이제 신입 교육은 제가 맡는대요.'],['kim',S.aff>=45?'사장님 회사가 커가는 걸 보면서 저도 많이 배웠어요. 진짜로요.':'승진해도 조달 상식은 계속 알려드릴게요!']],next)},
- 21:next=>choose('rival',`"…${S.name} 사장. 부끄럽지만 부탁 하나 하세. 원자재 파동 때 무리하다 우리 회사가 부도 직전이야. 회사는 몰라도… 직원들만큼은."${S.collusion&&!S.lenient?'<br><small>(그때 그 일은… 서로 끝까지 입 다무는 거야.)</small>':''}`,[
+ 18:next=>choose('rival',`"…${S.name} 사장. 부끄럽지만 부탁 하나 하세. 원자재 파동 때 무리하다 우리 회사가 부도 직전이야. 회사는 몰라도… 직원들만큼은."${S.collusion&&!S.lenient?'<br><small>(그때 그 일은… 서로 끝까지 입 다무는 거야.)</small>':''}`,[
   [`🤝 직원들을 고용 승계한다 (${fmt(cst(.2))})`,()=>{S.cash-=cst(.2);S.q=clamp(S.q+8,0,100);S.t=clamp(S.t+5,0,100);S.integ=clamp(S.integ+5,0,100);say([['rival','…고맙네. 자넨 처음부터 실력으로 붙는 사람이었지.'],['kims','방금 소식 들었어요. 사장님, 이런 게 진짜 상생이에요.']],next)},'pri'],
   [`🏭 회사를 인수한다 (${fmt(cst(.6))})`,()=>{S.cash-=cst(.6);S.stock+=TIER[S.tier].buy*3;S.q=clamp(S.q+5,0,100);S.rep=clamp(S.rep+5,0,100);say([['rival','공장이랑 원자재 재고까지 다 넘기지. 잘 키워주게.'],['sys',`원자재 재고 +${TIER[S.tier].buy*3}, 품질 +5, 신뢰 +5`]],next)}],
   ['🙅 냉정하게 거절한다',()=>say([['rival','…그래. 경쟁이란 원래 그런 거지.']],next)]]),
- 27:next=>{say([['news','<b>📋 조달청 인사 소식</b><br>김주무관이 <b>혁신조달 업무</b> 담당으로 발령받았어요!'],['kims','사장님, 저 꿈이 하나 있어요.'],['kims','2050년쯤엔 AI가 담합도 다 잡아내고, 동네 작은 공방도 세계 공공시장에 바로 납품하는 조달청. 그런 걸 만들고 싶어요.'],['me','그 첫 번째 납품업체, 우리 회사가 할게요.']],next)},
- 26:ev('[가상] 세계 경기침체','📉','경기가 얼어붙어 공고가 줄고 쇼핑몰 주문도 감소해요. (4턴)',()=>{S.recT=4})};
+ 19:next=>{say([['news','<b>📋 조달청 인사 소식</b><br>김주무관이 <b>혁신조달 업무</b> 담당으로 발령받았어요!'],['kims','사장님, 저 꿈이 하나 있어요.'],['kims','2050년쯤엔 AI가 담합도 다 잡아내고, 동네 작은 공방도 세계 공공시장에 바로 납품하는 조달청. 그런 걸 만들고 싶어요.'],['me','그 첫 번째 납품업체, 우리 회사가 할게요.']],next)}};
 const RANDOM=[
  iev('공방 화재','🔥','작업장에 불이 났어요! 다행히 다친 사람은 없지만 수리비가 들어요.',()=>{const c=cst(.1);S.cash-=c;log('화재 수리비 -'+fmt(c))}),
  iev('장인 입사','👷','30년 경력 모터 장인이 합류했어요! 품질 +8',()=>{S.q=clamp(S.q+8,0,100)}),
@@ -607,7 +603,7 @@ const RANDOM=[
 // ---------- 엔딩 ----------
 function finalEnding(){let id='ordinary';
  // 엔딩 규모는 최고 도달 규모 기준(말기 경기침체로 강등돼도 유지), 글로벌은 해외 낙찰 4건 이상
- const tm=Math.max(S.tier,S.tierMax||0);if(tm===3&&(S.ow||0)>=4)id='global';else if(tm===3)id='chaebol';else if(S.innov&&S.t>=85)id='innovation';else if(S.tier<=1&&S.excellent&&S.mas)id='artisan';else if(S.tier===2)id='midsize';
+ const tm=Math.max(S.tier,S.tierMax||0);if(tm===3&&(S.ow||0)>=2)id='global';else if(tm===3)id='chaebol';else if(S.innov&&S.t>=75)id='innovation';else if(S.tier<=1&&S.excellent&&S.mas)id='artisan';else if(S.tier===2)id='midsize';
  ending(id)}
 function ending(id){const ids=[id];
  if(!ENDS[id].bad){if(S.romance==='declared'&&S.aff>=100)ids.push('couple');if(S.integ>=90&&!S.collusion&&!S.disguise)ids.push('clean');if(S.collusion&&!S.lenient&&(S.collTurns||[]).every(t=>S.turn-t>=10))ids.push('escaped');if(S.lenient)ids.push('lenient')}
