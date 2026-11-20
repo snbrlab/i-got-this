@@ -119,10 +119,10 @@ const sfx={click:()=>beep(520,.04),win:()=>[523,659,784,1046].forEach((f,i)=>set
 // ---------- 도트 스프라이트 ----------
 const ROWS=["...hhhhhh...","..hhhhhhhh..",".hhhhhhhhhh.",".hssssssssh.","E","B","..sssmmsss..","...ssssss...","..cccwwccc..",".ccccwwcccc.","cccccwwccccc","cccccwwccccc"];
 const EYES={n:".ssksssskss.",s:".skkksskkks."}, BL={n:".ssssssssss.",b:".spssssssps."};
-const SPR={me:{h:'#5a3b22',c:'#3b6ea5',w:'#f0e6c8',e:'n',b:'n'},kim:{h:'#2a1a12',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhrr..",".hhhhhhhhhh.","hhsssssssshh","hssksssskssh","hssssssssssh","hhsssmmssshh","hh.ssssss.hh","hhcccwwccchh",".ccccwwcccc.","cccccwwccccc","cccccwwccccc"]},kimb:{h:'#2a1a12',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhrr..",".hhhhhhhhhh.","hhsssssssshh","hssksssskssh","hspsssssspsh","hhsssmmssshh","hh.ssssss.hh","hhcccwwccchh",".ccccwwcccc.","cccccwwccccc","cccccwwccccc"]},kims:{h:'#2a1a12',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhrr..",".hhhhhhhhhh.","hhsssssssshh","hssksssskssh","hspsssssspsh","hhsssmmssshh","hh.ssssss.hh","hhcccwwccchh",".ccccwwcccc.","cccccwwccccc","cccccwwccccc"]},rival:{h:'#9a9a9a',c:'#6b2d2d',w:'#d4af37',e:'s',b:'n'},audit:{h:'#333',c:'#1f1f1f',w:'#cc3333',e:'n',b:'n'}};
+const SPR={me:{h:'#3b2416',c:'#d9a066',w:'#4f6fa8',rows:["...hhhhhh...","..hhhhhhhh..",".hhhhhhhhhh.","hhhsssssshhh","hhsksssskshh","hhsssssssshh","hhsssmmssshh","hh.ssssss.hh","hhwwccccwwhh",".wwwccccwww.","wwwwccccwwww","wwwwccccwwww"]},kim:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".sgkgssgkgs.",".ssssssssss.","..sssmmsss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},kimb:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".sgkgssgkgs.",".spssssssps.","..sssmmsss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},kims:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".sgkgssgkgs.",".spssssssps.","..ssmmmmss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},rival:{h:'#9a9a9a',c:'#6b2d2d',w:'#d4af37',e:'s',b:'n'},audit:{h:'#333',c:'#1f1f1f',w:'#cc3333',e:'n',b:'n'}};
 const sprCache={};
 function sprite(k){if(sprCache[k])return sprCache[k];const s=SPR[k],cv=document.createElement('canvas');cv.width=cv.height=12;const x=cv.getContext('2d');
- const pal={h:s.h,s:'#f5c9a0',k:'#222',p:'#ff8fb0',m:'#c0504d',r:'#ff6fae',c:s.c,w:s.w};
+ const pal={h:s.h,s:'#f5c9a0',k:'#222',p:'#ff8fb0',m:'#c0504d',r:'#ff6fae',c:s.c,w:s.w,g:'#b8c0d8',l:'#6cb6ff'};
  (s.rows||ROWS).map(r=>r==='E'?EYES[s.e]:r==='B'?BL[s.b]:r).forEach((r,y)=>[...r].forEach((ch,xx)=>{if(pal[ch]){x.fillStyle=pal[ch];x.fillRect(xx,y,1,1)}}));
  return sprCache[k]=cv.toDataURL()}
 
@@ -273,6 +273,7 @@ function collection(tab){render(()=>{const tabs=B('🏆 엔딩',()=>collection('
 function intro(){say([
  ['sys',`${S.name}. 손때 묻은 공구와 조용하고 튼튼한 선풍기, 그리고 통장 잔고 <b>2억</b>.`],
  ['kim','안녕하세요, 조달청 나라장터 교육 담당 <b>김주무관</b>입니다. 오늘 신규 업체 교육 오신 거 맞죠?'],
+ ['kim','사실 저도 이 업무 맡은 지 얼마 안 됐어요. 제도는 제가, 현장은 사장님이 더 잘 아실 테니까… 서로 배워요.'],
  ['kim','사장님 선풍기 얘기 들었어요. 소리 작고 고장이 없다고요. 그런 제품이야말로 학교나 경로당에서 찾는 거예요.'],
  ['kim','공공기관 구매는 거의 다 <b>나라장터</b>에 공고로 올라와요. 공고 고르고, 예비가격 번호 두 개 찍고, 투찰률 써내면 돼요. 생각보다 간단해요.'],
  ['kim','대신 너무 싸게 쓰면 <b>하한선</b>에 걸려서 무효예요. 그리고 낙찰받으면 약속한 품질로 납품까지 해야 진짜 끝이에요.'],
@@ -413,7 +414,7 @@ function actBtn(a){const cost=a.c(),lk=a.lock&&a.lock(),d=typeof a.d==='function
 function doAct(a){const cost=a.c();S.ap--;S.cash-=cost;if(a.talk)return talkKim();if(a.date)return dateScene();const r=a.run();log(r.replace(/<[^>]+>/g,'').slice(0,60));toast(a.n+' 완료');a.n.includes('혁신')?say([['kims','혁신제품으로 지정되셨어요! 공공기관이 <b>첫 번째 고객</b>이 되어 시범구매를 할 거예요.'],['sys',r]],hub):hub()}
 
 // ---------- 김주무관 ----------
-const KIM_LINES=['나라장터 공고는 오전에 많이 올라와요. 출근하면 관심 품목부터 검색해 보세요.','전자입찰은 마감 시각을 1초만 넘겨도 안 받아줘요. 공동인증서 만료일은 미리 확인해 두세요.','개찰 결과는 마감 직후에 바로 떠요. 떨어져도 1순위 업체 투찰률은 꼭 적어두세요.','사정률은 매번 새로 뽑혀요. 지난번에 높았다고 이번에도 높으란 법은 없어요.','적격심사 서류를 기한 안에 안 내면 1순위여도 탈락이에요. 은근히 이걸로 많이 떨어져요.','납품 전에 검수 담당자랑 미리 통화해 두세요. 학교는 방학 때 받을 사람이 없거든요.','오늘 국가계약법 시행령 개정안이 나왔는데요… 아, 재미없으시죠? 저는 이런 게 재밌더라고요.','조달은 결국 세금으로 사는 거예요. 저희가 깐깐하게 구는 것도 그래서니까 너무 미워하진 마세요.','원자재는 쌀 때 사두는 게 정답인데, 다들 비쌀 때 불안해서 사더라고요.','경쟁사가 열 곳 넘으면 하한선 근처가 진짜 치열해요. 소수점 셋째 자리 싸움이에요.','지체상금 하루치는 작아 보여도 쌓이면 이익이 다 날아가요. 납기는 넉넉하게 잡으세요.','우수조달물품 심사는 서류보다 현장 확인이 까다로워요. 공장 정리정돈부터 해두세요.','쇼핑몰은 입점이 끝이 아니라 시작이에요. 상세 설명이랑 사진 신경 쓴 업체가 주문을 더 받아요.','중견기업이 되면 중소기업 전용 시장은 졸업이에요. 매출이 느는 게 꼭 좋기만 한 건 아니에요.','요즘은 입찰 데이터 분석으로 담합이 꽤 잡혀요. 같은 PC에서 투찰했다가 걸린 사례도 있어요.','저도 처음 발령받았을 땐 예비가격이 뭔지 몰랐어요. 다들 처음엔 그래요.','오늘 구내식당 메뉴가 제육이었는데, 그 식자재도 다 입찰로 들어온 거예요. 직업병이죠.','민원 전화 중에 제일 많은 게 "왜 우리가 떨어졌냐"예요. 그래서 개찰 결과를 전부 공개하는 거고요.','혁신제품은 "써본 데가 없어서" 못 팔던 제품을 공공이 먼저 써주는 제도예요. 기술 있으시면 꼭 노려보세요.','연말엔 예산 집행 때문에 공고가 몰려요. 그때 서류가 준비돼 있는 회사가 다 가져가요.'];
+const KIM_LINES=['나라장터 공고는 오전에 많이 올라와요. 출근하면 관심 품목부터 검색해 보세요.','전자입찰은 마감 시각을 1초만 넘겨도 안 받아줘요. 공동인증서 만료일은 미리 확인해 두세요.','개찰 결과는 마감 직후에 바로 떠요. 떨어져도 1순위 업체 투찰률은 꼭 적어두세요.','사정률은 매번 새로 뽑혀요. 지난번에 높았다고 이번에도 높으란 법은 없어요.','적격심사 서류를 기한 안에 안 내면 1순위여도 탈락이에요. 은근히 이걸로 많이 떨어져요.','납품 전에 검수 담당자랑 미리 통화해 두세요. 학교는 방학 때 받을 사람이 없거든요.','오늘 국가계약법 시행령 개정안이 나왔는데요… 아, 재미없으시죠? 저는 이런 게 재밌더라고요.','조달은 결국 세금으로 사는 거예요. 저희가 깐깐하게 구는 것도 그래서니까 너무 미워하진 마세요.','원자재는 쌀 때 사두는 게 정답인데, 다들 비쌀 때 불안해서 사더라고요.','경쟁사가 열 곳 넘으면 하한선 근처가 진짜 치열해요. 소수점 셋째 자리 싸움이에요.','지체상금 하루치는 작아 보여도 쌓이면 이익이 다 날아가요. 납기는 넉넉하게 잡으세요.','우수조달물품 심사는 서류보다 현장 확인이 까다로워요. 공장 정리정돈부터 해두세요.','쇼핑몰은 입점이 끝이 아니라 시작이에요. 상세 설명이랑 사진 신경 쓴 업체가 주문을 더 받아요.','중견기업이 되면 중소기업 전용 시장은 졸업이에요. 매출이 느는 게 꼭 좋기만 한 건 아니에요.','요즘은 입찰 데이터 분석으로 담합이 꽤 잡혀요. 같은 PC에서 투찰했다가 걸린 사례도 있어요.','저도 처음 발령받았을 땐 예비가격이 뭔지 몰랐어요. 다들 처음엔 그래요.','아직 2년 차라 민원 전화 받을 때 손에 땀이 나요. 사장님은 그런 거 하나도 안 떨리시죠?','사장님은 현장 경력이 저보다 훨씬 기시니까, 제가 틀리게 말하면 바로 짚어주세요.','오늘 구내식당 메뉴가 제육이었는데, 그 식자재도 다 입찰로 들어온 거예요. 직업병이죠.','민원 전화 중에 제일 많은 게 "왜 우리가 떨어졌냐"예요. 그래서 개찰 결과를 전부 공개하는 거고요.','혁신제품은 "써본 데가 없어서" 못 팔던 제품을 공공이 먼저 써주는 제도예요. 기술 있으시면 꼭 노려보세요.','연말엔 예산 집행 때문에 공고가 몰려요. 그때 서류가 준비돼 있는 회사가 다 가져가요.'];
 function kimAdvice(){const L=[];
  if(S.cash<TIER[S.tier].over*4+.2)L.push('잔고가 아슬아슬해요! 당분간 활동비는 아끼고, 확실한 공고 위주로 가세요.');
  if(S.mat>130&&S.stock<50)L.push(`원자재 지수가 ${Math.round(S.mat)}이에요. 재고 없이 계약하면 남는 게 없을 수 있어요.${S.release&&isSME()?' 지금 <b>비축물자 방출</b> 중이니 꼭 활용하세요!':''}`);
@@ -487,10 +488,10 @@ function dateScene(){const [place,line0,opts]=pick(DATES),line=(S.romance==='hid
 function romanceCheck(){
  if(S.romance==='friend')return hub();
  if(S.aff>=60&&S.affStage<3){S.affStage=3;return choose('kimb','(퇴근길, 한참 말이 없다가) 사장님… 요즘 결재 올라오는 공고마다 사장님 회사 이름부터 찾게 돼요. 이러면 안 되는 거 아는데.',[
-  ['💌 마음을 전하고, 이해충돌 신고를 함께 한다',()=>{S.romance='declared';S.integ=clamp(S.integ+10,0,100);usePol('conflict');say([['kimb','…저도 같은 마음이에요. 그럼 내일 바로 <b>사적이해관계자 신고</b>할게요. 알게 된 날부터 14일 안에 해야 하거든요.'],['kims','신고하면 사장님 회사 건은 다른 주무관님이 맡게 돼요. 좀 서운해도… 이게 우리 둘 다 지키는 방법이에요.'],['me','(공과 사를 이렇게 정확히 나누는 사람이라서, 좋아하게 된 건지도 몰라.)']],hub)},'pink'],
+  ['💌 마음을 전하고, 이해충돌 신고를 함께 한다',()=>{S.romance='declared';S.integ=clamp(S.integ+10,0,100);usePol('conflict');say([['kimb','…저도 같은 마음이에요. 그럼 내일 바로 <b>사적이해관계자 신고</b>할게요. 알게 된 날부터 14일 안에 해야 하거든요.'],['kims','신고하면 사장님 회사 건은 다른 주무관님이 맡게 돼요. 좀 서운해도… 이게 우리 둘 다 지키는 방법이에요.'],['me','(공과 사를 이렇게 정확히 나누는 사람이라서, 좋아하게 된 건지도 몰라.)'],['kimb','그리고… 퇴근하고 둘이 있을 땐, <b>누나</b>라고 불러도 돼요?'],['me','(…생각보다 직진이네, 이 친구.)']],hub)},'pink'],
   ['🤫 둘만의 비밀로 하자',()=>{S.romance='hidden';S.integ=clamp(S.integ-15,0,100);say([['kimb','…그래요. 당분간은 아무도 모르게.'],['sys','⚠️ 신고하지 않은 사적이해관계는 감사에서 드러날 수 있어요. 들키면 두 사람 모두 책임을 져요.']],hub)}],
   ['🙇 지금은 일에 집중하고 싶어요',()=>{S.romance='friend';S.aff=50;say([['kim','…아, 네. 제가 괜한 말을 했네요. 앞으로도 좋은 파트너로 지내요. 조달 상식은 계속 알려드릴게요.']],hub)}]])}
- if(S.romance==='declared'&&S.aff>=100&&S.affStage<4){S.affStage=4;return say([['kims','사장님. 이번 주말에… 조달청 말고 <b>우리 둘만의 계약서</b> 쓰고 싶어요.'],['me','…경쟁 없는 수의계약이네요. 이건 바로 낙찰입니다.'],['kims','(웃음) 계약 기간은요? …무기한으로 해요.']],hub)}
+ if(S.romance==='declared'&&S.aff>=100&&S.affStage<4){S.affStage=4;return say([['kims','사장님. 이번 주말에… 조달청 말고 <b>우리 둘만의 계약서</b> 쓰고 싶어요.'],['me','…경쟁 없는 수의계약이네요. 이건 바로 낙찰입니다.'],['kims','(웃음) 계약 기간은 무기한이에요. 해지 조항은 없고요, 누나.']],hub)}
  hub()}
 
 // ---------- 정산 ----------
@@ -574,12 +575,12 @@ const FIXED={
  12:ev('물품 낙찰하한율 2%p 상향','📏','저가 덤핑을 막고 제값을 받도록 물품 적격심사 낙찰하한율이 2%p 올랐어요. (소액·일반 84.245% → 86.245% 등)<br><small>※ 실제로 2026년 5월 시행됐어요.</small>',()=>dict('낙찰하한율')),
  13:ev('중소기업 경쟁제품 하한율 상향','📏','중소기업자간 경쟁 물품의 낙찰하한율도 87.995% → <b>89.995%</b>로 올랐어요. 중소기업이 제값 받는 시장!<br><small>※ 실제로 2026년 7월 27일부터 적용됐어요.</small>',()=>seePol('sme_comp')),
  15:ev('[가상] 조달물자 품질관리 강화','🔎','조달청이 납품 현장 <b>불시점검</b>을 늘려요! 앞으로 납품한 반기에는 점검이 나올 수 있어요. 품질이 낮으면 신뢰가 깎이고, 심하면 <b>거래정지</b>예요.',()=>{S.inspect=true;seePol('quality')}),
- 16:next=>{S.kimRank='김사무관';say([['news','<b>📋 조달청 인사 소식</b><br>김주무관이 5급 사무관으로 승진했어요!'],['kims','사장님! 저 이제 <b>김사무관</b>이에요. …호칭 바꾸기 어색하면 편하게 불러주세요.'],['kim',S.aff>=45?'사장님 회사가 커가는 걸 보면서 저도 많이 배웠어요. 진짜로요.':'승진해도 조달 상식은 계속 알려드릴게요!']],next)},
+ 16:next=>{say([['news','<b>📋 조달청 인사 소식</b><br>김주무관이 6급으로 승진했어요!'],['kims','사장님! 저 6급 됐어요. 호칭은 그대로 주무관인데… 이제 신입 교육은 제가 맡는대요.'],['kim',S.aff>=45?'사장님 회사가 커가는 걸 보면서 저도 많이 배웠어요. 진짜로요.':'승진해도 조달 상식은 계속 알려드릴게요!']],next)},
  21:next=>choose('rival',`"…${S.name} 사장. 부끄럽지만 부탁 하나 하세. 원자재 파동 때 무리하다 우리 회사가 부도 직전이야. 회사는 몰라도… 직원들만큼은."${S.collusion&&!S.lenient?'<br><small>(그때 그 일은… 서로 끝까지 입 다무는 거야.)</small>':''}`,[
   [`🤝 직원들을 고용 승계한다 (${fmt(cst(.2))})`,()=>{S.cash-=cst(.2);S.q=clamp(S.q+8,0,100);S.t=clamp(S.t+5,0,100);S.integ=clamp(S.integ+5,0,100);say([['rival','…고맙네. 자넨 처음부터 실력으로 붙는 사람이었지.'],['kims','방금 소식 들었어요. 사장님, 이런 게 진짜 상생이에요.']],next)},'pri'],
   [`🏭 회사를 인수한다 (${fmt(cst(.6))})`,()=>{S.cash-=cst(.6);S.stock+=TIER[S.tier].buy*3;S.q=clamp(S.q+5,0,100);S.rep=clamp(S.rep+5,0,100);say([['rival','공장이랑 원자재 재고까지 다 넘기지. 잘 키워주게.'],['sys',`원자재 재고 +${TIER[S.tier].buy*3}, 품질 +5, 신뢰 +5`]],next)}],
   ['🙅 냉정하게 거절한다',()=>say([['rival','…그래. 경쟁이란 원래 그런 거지.']],next)]]),
- 27:next=>{S.kimRank='김과장';say([['news','<b>📋 조달청 인사 소식</b><br>김사무관이 <b>혁신조달과장</b>으로 발령받았어요!'],['kims','사장님, 저 꿈이 하나 있어요.'],['kims','2050년쯤엔 AI가 담합도 다 잡아내고, 동네 작은 공방도 세계 공공시장에 바로 납품하는 조달청. 그런 걸 만들고 싶어요.'],['me','그 첫 번째 납품업체, 우리 회사가 할게요.']],next)},
+ 27:next=>{say([['news','<b>📋 조달청 인사 소식</b><br>김주무관이 <b>혁신조달 업무</b> 담당으로 발령받았어요!'],['kims','사장님, 저 꿈이 하나 있어요.'],['kims','2050년쯤엔 AI가 담합도 다 잡아내고, 동네 작은 공방도 세계 공공시장에 바로 납품하는 조달청. 그런 걸 만들고 싶어요.'],['me','그 첫 번째 납품업체, 우리 회사가 할게요.']],next)},
  26:ev('[가상] 세계 경기침체','📉','경기가 얼어붙어 공고가 줄고 쇼핑몰 주문도 감소해요. (4턴)',()=>{S.recT=4})};
 const RANDOM=[
  iev('공방 화재','🔥','작업장에 불이 났어요! 다행히 다친 사람은 없지만 수리비가 들어요.',()=>{const c=cst(.1);S.cash-=c;log('화재 수리비 -'+fmt(c))}),
