@@ -206,6 +206,7 @@ const ENDS={
  couple:{e:'💍',n:'조달 커플',d:'이해충돌 신고까지 정석대로! 공과 사를 지킨 두 사람, 행복하세요.',bonus:1},
  escaped:{e:'🫣',n:'들키지 않은 비밀',d:'담합은 끝내 드러나지 않았어요. 처분 기한도 지났고요. 그런데 왜 이렇게 찜찜할까요?',bonus:1},
  lenient:{e:'🙋',n:'다시 쓰는 장부',d:'잘못을 먼저 털어놓고 다시 시작했어요. 자진신고 제도가 담합의 고리를 끊어요.',bonus:1},
+ love:{e:'💕',n:'사랑을 낙찰받다',d:'회사는 작아도, 인생 최고의 계약은 따냈어요. 오늘도 공방엔 선풍기 두 대가 나란히 돌아가요.'},
  clean:{e:'🕊️',n:'청렴 명예의 전당',d:'담합·꼼수 없이 끝까지 공정하게 경쟁한 사장님. 조달청이 표창합니다.',bonus:1}};
 
 // ---------- 상태 ----------
@@ -273,7 +274,7 @@ function help(){render(()=>`<section class="panel"><h2>❓ 게임 방법</h2>
  <h3>매 턴 할 일</h3><p>① <b>나라장터 공고</b> 중 하나에 입찰 (턴당 1회)<br>② <b>활동</b> 2번 (연구개발·품질관리·원자재 구매·김주무관 면담·각종 인증 신청)<br>③ <b>반기 마감</b> → 정산, 돌발 사건 발생</p>
  <h3>입찰 규칙 (실제 나라장터 방식을 단순화)</h3><p>예비가격 15개 중 2개를 고르고 투찰률을 써내요. 예비가격 금액은 개찰 전까지 비공개! 모두가 고른 번호 중 가장 많이 뽑힌 4개의 평균이 <b>예정가격</b>. 예정가격×낙찰하한율 이상이면서 <b>가장 낮은 가격</b>이 낙찰! 너무 낮으면 하한선 미달, 너무 높으면 경쟁에서 밀려요.</p>
  <h3>성장의 딜레마</h3><p>연매출이 커지면 소기업 → 중소기업 → 중견기업 → 대기업. 규모가 줄어드는 건 <b>최근 3년 평균 매출</b>이 기준 아래로 떨어질 때예요. 설비와 기술은 매 반기 조금씩 낡으니 꾸준히 투자하세요! 하지만 중견기업이 되면 <b>중소기업 전용 시장과 혜택을 잃어요</b>. 성장할까, 지킬까?</p>
- <h3>수집</h3><p>엔딩 14종 · 조달도감 · 정책도감을 모아보세요. 💗 김주무관 루트도 있어요.</p>
+ <h3>수집</h3><p>엔딩 15종 · 조달도감 · 정책도감을 모아보세요. 💗 김주무관 루트도 있어요.</p>
  ${B('◀ 돌아가기',title,'pri')}</section>`,false)}
 function collection(tab){render(()=>{const tabs=B('🏆 엔딩',()=>collection('end'),tab==='end'?'on':'')+B('📖 조달도감',()=>collection('dict'),tab==='dict'?'on':'')+B('📘 정책도감',()=>collection('pol'),tab==='pol'?'on':'')+B('🎖️ 칭호',()=>collection('ach'),tab==='ach'?'on':'');
  let body='';
@@ -427,14 +428,14 @@ const ACTS=[
  {n:'🏛️ 비축물자 구매',d:()=>`${TIER[S.tier].buy}개 · 시세의 80% · 급등기 원가 방어!`,show:()=>S.release>0,lock:()=>!isSME()&&'중소기업만 가능',c:()=>TIER[S.tier].buy*.01*S.mat/100*.8,run(){S.stock+=TIER[S.tier].buy;usePol('stockpile');dict('비축물자');return `조달청 비축물자 ${TIER[S.tier].buy}개를 싸게 구입!`}},
  {n:'🏦 네트워크론 대출',d:()=>`최근 계약 ${fmt(S.lastContract||0)}의 80% · 다음 정산 때 이자 3% 붙여 상환`,show:()=>!S.loanBal,lock:()=>!S.lastContract&&'계약 실적 필요 (계약 1건당 1회)',c:()=>0,run(){const a=S.lastContract*.8;S.cash+=a;S.loanBal=a*1.03;S.lastContract=0;usePol('network');return `네트워크론 ${fmt(a)} 대출! 다음 반기 정산 때 ${fmt(S.loanBal)}을 갚아요.`}},
  {n:'☕ 김주무관 면담',d:'조달 정책 배우기 · 💗',c:()=>0,talk:1},
- {n:'💗 김주무관과 데이트',d:'호감도↑↑',show:()=>S.romance==='declared'||S.romance==='hidden',c:()=>.003,date:1},
+ {n:'💗 김주무관과 데이트',d:'퇴근 후 일정 · ⚡ 안 씀 · 반기 1번 · 호감도↑↑',show:()=>S.romance==='declared'||S.romance==='hidden',lock:()=>S.dateT===S.turn&&'이번 반기엔 이미 만났어요',c:()=>.003,date:1,free:1},
  {n:'🛒 MAS 다수공급자계약 신청',d:'종합쇼핑몰 입점 → 매 반기 주문',show:()=>!S.mas,lock:()=>(S.wins<3||S.q<35)&&'납품실적 3건 · 품질 35',c:()=>cst(.05),run(){S.mas=true;S.masNew=true;usePol('mas');dict('종합쇼핑몰');return '나라장터 종합쇼핑몰에 입점했어요!'}},
  {n:'🏅 우수조달물품 지정 신청',d:'적격심사 통과·쇼핑몰 매출↑',show:()=>!S.excellent,lock:()=>!isSME()?'중소기업만 가능':(S.q<60||S.t<45)&&'품질 60 · 기술 45',c:()=>cst(.1),run(){S.excellent=true;usePol('excellent');return '우수조달물품으로 지정됐어요!'}},
  {n:'💡 혁신제품 지정 신청',d:'공공이 첫 고객! 시범구매',show:()=>!S.innov,lock:()=>S.t<S.innovReq&&`기술 ${S.innovReq}`,c:()=>cst(.2),run(){S.innov=true;usePol('innov');dict('시범구매');return contract({type:'general',item:'💡 혁신제품 시범구매',base:4*(1+S.tier)},4*(1+S.tier)*.95)}},
  {n:'🌏 해외조달시장 진출',d:'해외 공고 해금',show:()=>!S.global,lock:()=>(S.tier<2||!(S.excellent||S.innov)||S.q<55)&&'중견기업 이상 · 우수조달/혁신 · 품질 55',c:()=>cst(.1),run(){S.global=true;usePol('global');return '조달청 지원으로 해외조달시장에 진출!'}}];
 function actBtn(a){const cost=a.c(),lk=a.lock&&a.lock(),d=typeof a.d==='function'?a.d():a.d;
- return B(`${a.n.replace('김주무관',kimName())}<small>${d} · ${cost?fmt(cost):'무료'}${lk?` · 🔒 ${lk}`:''}</small>`,()=>doAct(a),'',S.ap<1||!!lk||S.cash<cost)}
-function doAct(a){const cost=a.c();S.ap--;S.cash-=cost;if(a.talk)return talkKim();if(a.date)return dateScene();const r=a.run();log(r.replace(/<[^>]+>/g,'').slice(0,60));toast(a.n+' 완료');a.n.includes('혁신')?say([['kims','혁신제품으로 지정되셨어요! 공공기관이 <b>첫 번째 고객</b>이 되어 시범구매를 할 거예요.'],['sys',r]],hub):hub()}
+ return B(`${a.n.replace('김주무관',kimName())}<small>${d} · ${cost?fmt(cost):'무료'}${lk?` · 🔒 ${lk}`:''}</small>`,()=>doAct(a),'',(!a.free&&S.ap<1)||!!lk||S.cash<cost)}
+function doAct(a){const cost=a.c();if(!a.free)S.ap--;S.cash-=cost;if(a.talk)return talkKim();if(a.date)return dateScene();const r=a.run();log(r.replace(/<[^>]+>/g,'').slice(0,60));toast(a.n+' 완료');a.n.includes('혁신')?say([['kims','혁신제품으로 지정되셨어요! 공공기관이 <b>첫 번째 고객</b>이 되어 시범구매를 할 거예요.'],['sys',r]],hub):hub()}
 
 // ---------- 김주무관 ----------
 const KIM_LINES=['나라장터 공고는 오전에 많이 올라와요. 출근하면 관심 품목부터 검색해 보세요.','전자입찰은 마감 시각을 1초만 넘겨도 안 받아줘요. 공동인증서 만료일은 미리 확인해 두세요.','개찰 결과는 마감 직후에 바로 떠요. 떨어져도 1순위 업체 투찰률은 꼭 적어두세요.','사정률은 매번 새로 뽑혀요. 지난번에 높았다고 이번에도 높으란 법은 없어요.','적격심사 서류를 기한 안에 안 내면 1순위여도 탈락이에요. 은근히 이걸로 많이 떨어져요.','납품 전에 검수 담당자랑 미리 통화해 두세요. 학교는 방학 때 받을 사람이 없거든요.','오늘 국가계약법 시행령 개정안이 나왔는데요… 아, 재미없으시죠? 저는 이런 게 재밌더라고요.','조달은 결국 세금으로 사는 거예요. 저희가 깐깐하게 구는 것도 그래서니까 너무 미워하진 마세요.','원자재는 쌀 때 사두는 게 정답인데, 다들 비쌀 때 불안해서 사더라고요.','경쟁사가 열 곳 넘으면 하한선 근처가 진짜 치열해요. 소수점 셋째 자리 싸움이에요.','지체상금 하루치는 작아 보여도 쌓이면 이익이 다 날아가요. 납기는 넉넉하게 잡으세요.','우수조달물품 심사는 서류보다 현장 확인이 까다로워요. 공장 정리정돈부터 해두세요.','쇼핑몰은 입점이 끝이 아니라 시작이에요. 상세 설명이랑 사진 신경 쓴 업체가 주문을 더 받아요.','중견기업이 되면 중소기업 전용 시장은 졸업이에요. 매출이 느는 게 꼭 좋기만 한 건 아니에요.','요즘은 입찰 데이터 분석으로 담합이 꽤 잡혀요. 같은 PC에서 투찰했다가 걸린 사례도 있어요.','저도 처음 발령받았을 땐 예비가격이 뭔지 몰랐어요. 다들 처음엔 그래요.','아직 2년 차라 민원 전화 받을 때 손에 땀이 나요. 사장님은 그런 거 하나도 안 떨리시죠?','사장님은 현장 경력이 저보다 훨씬 기시니까, 제가 틀리게 말하면 바로 짚어주세요.','오늘 구내식당 메뉴가 제육이었는데, 그 식자재도 다 입찰로 들어온 거예요. 직업병이죠.','민원 전화 중에 제일 많은 게 "왜 우리가 떨어졌냐"예요. 그래서 개찰 결과를 전부 공개하는 거고요.','혁신제품은 "써본 데가 없어서" 못 팔던 제품을 공공이 먼저 써주는 제도예요. 기술 있으시면 꼭 노려보세요.','연말엔 예산 집행 때문에 공고가 몰려요. 그때 서류가 준비돼 있는 회사가 다 가져가요.'];
@@ -472,8 +473,8 @@ function talkKim(){S.talks=(S.talks||0)+1;
  // 호감도는 면담 자체가 아니라, 면담 중 생기는 '순간' 이벤트의 선택으로만 쌓인다
  say([[w,kimAdvice()],[w,`오늘의 조달 상식! <b>${POL[pid].n}</b><br>${POL[pid].d}`]],()=>{
   if(S.romance==='friend'||S.affStage>=3)return romanceCheck();
-  if(!S.spark)return S.talks>=3&&Math.random()<.6?sparkEvent():hub();
-  Math.random()<.5?momentEvent():hub()})}
+  if(!S.spark)return S.talks>=3?sparkEvent():hub();
+  Math.random()<.6?momentEvent():hub()})}
 function sparkEvent(){choose('kim','(퇴근길 청사 앞 카페. 줄을 서 있는데 앞사람이 돌아본다)<br>어? 사장님? 여기 자주 오세요?',[
  ['☕ "주무관님 추천 메뉴는 뭐예요?"',()=>{S.spark=true;S.affStage=1;S.aff=15;say([['kimb','바닐라라떼요. 입찰 마감 전날엔 두 잔 마셔요. …이거 비밀이에요.'],['me','(업무 말고 이런 얘기는 처음이네.)'],['sys','💗 김주무관과 조금 가까워졌어요.']],hub)},'pink'],
  ['📑 "마침 잘 만났네요, 적격심사 질문이…"',()=>say([['kim','아, 그건… 내일 사무실로 전화 주세요. 퇴근길엔 저도 좀 쉬고 싶어서요. 좋은 저녁 되세요!']],hub)]])}
@@ -504,7 +505,7 @@ const DATES=[
  ['🏸 퇴근 후 배드민턴','청사 동호회에서 배드민턴 배웠어요. 봐주지 마세요.',[['🏸 진지하게 붙고, 지면 깔끔하게 인정한다',13,'공정한 경쟁 좋네요! 졌으니까 음료는 사장님이 사요.'],['🙃 일부러 져준다',6,'…일부러 진 거 다 보였어요. 그거 담합이에요, 담합.']]],
  ['🏕️ 캠핑','밤하늘 별 보니까 좋네요. 근데 텐트 안이 좀 덥다…',[['🌀 공방 선풍기를 꺼낸다',14,'(조용히 돌아가는 소리) …이래서 학교들이 사장님 선풍기를 사는 거구나.'],['🔥 모닥불 앞에서 다음 입찰 얘기를 꺼낸다',6,'여기까지 와서 입찰 얘기요? 별 보러 온 거잖아요.']]],
  ['📞 밤 11시 통화','(전화) 자려고 누웠는데 목소리 듣고 싶어서요. …방금 그거 취소. 아니, 취소 안 할래요.',[['📱 "저도요. 오늘 하루 어땠어요?"',14,'…별일 없었어요. 근데 이렇게 물어봐 주는 사람이 있다는 게 별일이네요.'],['😴 "내일 개찰 있잖아요, 얼른 자요"',6,'…네. 사장님은 제 일정까지 다 꿰고 있네요. 잘 자요.']]]];
-function dateScene(){const [place,line0,opts]=pick(DATES),line=(S.romance==='hidden'&&!/공방|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
+function dateScene(){S.dateT=S.turn;const [place,line0,opts]=pick(DATES),line=(S.romance==='hidden'&&!/공방|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
  choose('kimb',`<b>${place}</b><br>${line}`,opts.map(([l,d,reply])=>[l,()=>{S.aff=clamp(S.aff+d,0,100);log(`💗 ${place} 데이트`);S.dateSeen=S.dateSeen||[];if(!S.dateSeen.includes(place))S.dateSeen.push(place);if(S.dateSeen.length>=5)ach('dates');
   const after=()=>{if(S.romance==='hidden'&&Math.random()<.35){S.hiddenRisk=(S.hiddenRisk||0)+.05;return say([['sys','📸 찰칵… 어디선가 셔터 소리가 들린 것 같아요. (감사 위험 증가)']],romanceCheck)}romanceCheck()};
   say([['kims',reply]],after)},'pink']))}
@@ -634,11 +635,13 @@ const RANDOM=[
 
 // ---------- 엔딩 ----------
 function finalEnding(){let id='ordinary';
- // 엔딩 규모는 최고 도달 규모 기준(말기 경기침체로 강등돼도 유지), 글로벌은 해외 낙찰 4건 이상
+ // 엔딩 규모는 최고 도달 규모 기준(말기에 강등돼도 유지), 글로벌은 해외 낙찰 2건 이상
  const tm=Math.max(S.tier,S.tierMax||0);if(tm===3&&(S.ow||0)>=2)id='global';else if(tm===3)id='chaebol';else if(S.innov&&S.t>=75)id='innovation';else if(S.tier<=1&&S.excellent&&S.mas)id='artisan';else if(S.tier===2)id='midsize';
+ // 사업 대신 사랑을 택한 루트: 동네 공방 + 커플이면 연애 엔딩이 메인
+ if(id==='ordinary'&&S.romance==='declared'&&S.aff>=100)id='love';
  ending(id)}
 function ending(id){const ids=[id];
- if(!ENDS[id].bad){if(S.romance==='declared'&&S.aff>=100)ids.push('couple');if(S.integ>=90&&!S.collusion&&!S.disguise)ids.push('clean');if(S.collusion&&!S.lenient&&(S.collTurns||[]).every(t=>S.turn-t>=10))ids.push('escaped');if(S.lenient)ids.push('lenient')}
+ if(!ENDS[id].bad){if(id!=='love'&&S.romance==='declared'&&S.aff>=100)ids.push('couple');if(S.integ>=90&&!S.collusion&&!S.disguise)ids.push('clean');if(S.collusion&&!S.lenient&&(S.collTurns||[]).every(t=>S.turn-t>=10))ids.push('escaped');if(S.lenient)ids.push('lenient')}
  const fresh=ids.filter(k=>!col.end[k]);ids.forEach(k=>col.end[k]=1);saveCol();store.del('pps_save');
  S.ended={ids,fresh};ENDS[id].bad?sfx.lose():sfx.win();showEnding(S.ended)}
 function showEnding({ids,fresh}){const used=Object.keys(S.polUsed).length,tot=Object.keys(POL).length;
