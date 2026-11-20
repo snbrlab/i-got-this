@@ -85,6 +85,7 @@ button.start{font-size:20px;padding:12px 30px;text-align:center;animation:blink 
 .toasts{position:fixed;right:12px;bottom:12px;z-index:20;display:flex;flex-direction:column;gap:6px;max-width:280px}
 .toast{background:#0b0d16;border:2px solid var(--y);color:var(--y);padding:6px 10px;font-size:13px;box-shadow:3px 3px 0 #000;animation:reveal .3s steps(8)}
 .top-r{margin-left:auto}
+.bld{width:24px;height:24px;image-rendering:pixelated;vertical-align:middle}.bld.big{width:64px;height:64px}
 .foot{text-align:center;font-size:12px;color:var(--dim);margin-top:24px}
 @media (max-width:560px){.yega{grid-template-columns:repeat(3,1fr)}.dlg{flex-direction:column}.por{display:flex;gap:10px;align-items:center}.por img,.por .emo{width:64px;height:64px;line-height:64px;font-size:36px}.title h1{font-size:26px}}
 </style>
@@ -108,7 +109,10 @@ const pct=(x,d=2)=>(x>=0?'+':'')+(x*100).toFixed(d)+'%';
 
 // ---------- 저장 ----------
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
-let col=store.get('pps_col',{end:{},dict:{},pol:{}});
+let col=store.get('pps_col',{end:{},dict:{},pol:{}});col.ach=col.ach||{};
+const ACH={first:{e:'🎉',n:'첫 계약',d:'공공기관과 첫 계약을 맺었어요.'},knife:{e:'🎯',n:'칼같은 투찰',d:'하한선과 0.05%p 이내 차이로 낙찰받았어요.'},comeback:{e:'🔥',n:'칠전팔기',d:'5연패 뒤에 낙찰받았어요.'},trader:{e:'📦',n:'원자재 타짜',d:'원자재 지수 80 이하에서 구리를 사들였어요.'},q100:{e:'🛠️',n:'명품 공방',d:'품질 100을 찍었어요.'},t100:{e:'🔬',n:'기술 명장',d:'기술 100을 찍었어요.'},clean:{e:'🕊️',n:'청렴 100',d:'청렴도 100을 달성했어요.'},deliver:{e:'🚚',n:'무지체 납품왕',d:'지체 없이 납품을 10번 해냈어요.'},nego:{e:'🤝',n:'협상의 달인',d:'쇼핑몰 이익률을 최고 45%까지 끌어올렸어요.'},overseas:{e:'🌏',n:'바다 건너 바람',d:'해외조달 공고를 처음 따냈어요.'},fair:{e:'🙅',n:'정정당당',d:'담합 제안을 거절했어요.'},inspect:{e:'🔎',n:'불시점검 프리패스',d:'불시점검에 2번 합격했어요.'},dates:{e:'💗',n:'데이트 코스 마스터',d:'서로 다른 데이트를 5번 해봤어요.'},big:{e:'🏙️',n:'공방에서 빌딩까지',d:'작은 공방을 대기업으로 키웠어요.'}};
+// 처음 얻은 칭호면 true
+function ach(id){if(col.ach[id])return false;col.ach[id]=1;saveCol();toast('🎖️ 칭호 획득: '+ACH[id].e+' '+ACH[id].n);return true}
 const saveCol=()=>store.set('pps_col',col);
 
 // ---------- 사운드 ----------
@@ -121,6 +125,15 @@ const ROWS=["...hhhhhh...","..hhhhhhhh..",".hhhhhhhhhh.",".hssssssssh.","E","B",
 const EYES={n:".ssksssskss.",s:".skkksskkks."}, BL={n:".ssssssssss.",b:".spssssssps."};
 const SPR={me:{h:'#3b2416',c:'#d9a066',w:'#4f6fa8',rows:["...hhhhhh...","..hhhhhhhh..",".hhhhhhhhhh.","hhhsssssshhh","hhsksssskshh","hhsssssssshh","hhsssmmssshh","hh.ssssss.hh","hhwwccccwwhh",".wwwccccwww.","wwwwccccwwww","wwwwccccwwww"]},kim:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".ssksssskss.",".ssssssssss.","..sssmmsss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},kimb:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".ssksssskss.",".spssssssps.","..sssmmsss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},kims:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".ssksssskss.",".spssssssps.","..ssmmmmss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},rival:{h:'#9a9a9a',c:'#6b2d2d',w:'#d4af37',e:'s',b:'n'},audit:{h:'#333',c:'#1f1f1f',w:'#cc3333',e:'n',b:'n'}};
 const sprCache={};
+// 회사 규모별 건물 도트: 공방 → 공장 → 중견 빌딩 → 대기업 타워
+const BLD=[["............","............","............","....rrrr....","...rrrrrr...","..rrrrrrrr..",".rrrrrrrrrr.","..wwwwwwww..","..wggwwddw..","..wggwwddw..","..wwwwwddw..","kkkkkkkkkkkk"],
+ ["............","..........k.","..........k.",".........bb.",".r..r..r.bb.",".rr.rr.rrbb.",".rrrrrrrrbb.",".bbbbbbbbbb.",".bggbggbggb.",".bbbbbbbbbb.",".bbbbddbbbb.","kkkkkkkkkkkk"],
+ ["....bbbb....","...bbbbbb...","...bgbbgb...","...bbbbbb...","...bgbbgb...","...bbbbbb...","...bgbbgb...","...bbbbbb...","...bgbbgb...","...bbbbbb...","...bbddbb...","kkkkkkkkkkkk"],
+ [".....yy.....",".....k......","....bbbb....","....bggb....","....bbbb....","....bggb.bbb","....bbbb.bgb",".bbbbggb.bbb",".bgbbbbb.bgb",".bbbbggb.bbb",".bbbbddb.bdb","kkkkkkkkkkkk"]];
+const bldCache={};
+function bldImg(t){if(bldCache[t])return bldCache[t];const cv=document.createElement('canvas');cv.width=cv.height=12;const x=cv.getContext('2d'),pal={r:'#c0504d',w:'#e8dcc0',d:'#5a3b22',g:'#6cb6ff',b:'#8a8fa8',y:'#ffd23f',k:'#555a70'};
+ BLD[t].forEach((r,yy)=>[...r].forEach((ch,xx)=>{if(pal[ch]){x.fillStyle=pal[ch];x.fillRect(xx,yy,1,1)}}));return bldCache[t]=cv.toDataURL()}
+const bld=(t,big)=>`<img class="bld${big?' big':''}" src="${bldImg(t)}" alt="${TIER[t].n}">`;
 function sprite(k){if(sprCache[k])return sprCache[k];const s=SPR[k],cv=document.createElement('canvas');cv.width=cv.height=12;const x=cv.getContext('2d');
  const pal={h:s.h,s:'#f5c9a0',k:'#222',p:'#ff8fb0',m:'#c0504d',r:'#ff6fae',c:s.c,w:s.w,g:'#b8c0d8',l:'#6cb6ff'};
  (s.rows||ROWS).map(r=>r==='E'?EYES[s.e]:r==='B'?BL[s.b]:r).forEach((r,y)=>[...r].forEach((ch,xx)=>{if(pal[ch]){x.fillStyle=pal[ch];x.fillRect(xx,y,1,1)}}));
@@ -213,7 +226,7 @@ const B=(label,fn,cls='',dis=false)=>{CB.push(fn);return `<button class="${cls}"
 document.addEventListener('click',e=>{const b=e.target.closest('[data-cb]');if(b&&!b.disabled){sfx.click();CB[+b.dataset.cb]()}});
 const app=document.getElementById('app');
 // 품질·기술 100 첫 달성 축하 (한 판에 한 번씩)
-function milestones(){S.m100=S.m100||{};[['q','🏆 품질 100 달성! 명품 선풍기 공방'],['t','🏆 기술 100 달성! 업계 최고 기술력']].forEach(([k,msg])=>{if(S[k]>=100&&!S.m100[k]){S.m100[k]=1;toast(msg);sfx.win()}})}
+function milestones(){S.m100=S.m100||{};[['q','🏆 품질 100 달성! 명품 선풍기 공방','q100'],['t','🏆 기술 100 달성! 업계 최고 기술력','t100'],['integ','🕊️ 청렴 100 달성!','clean']].forEach(([k,msg,a])=>{if(S[k]>=100&&!S.m100[k]){S.m100[k]=1;if(!ach(a))toast(msg);sfx.win()}})}
 function render(fn,hudOn=true){CB=[];if(S&&hudOn)milestones();const main=fn();app.innerHTML=(S&&hudOn?hud():'')+main+(S&&hudOn?`<div class="log">${S.log.slice(-5).reverse().map(l=>'· '+l).join('<br>')}</div>`:'');window.scrollTo(0,0)}
 const stay=f=>{const y=window.scrollY;f();window.scrollTo(0,y)}; // 같은 화면 갱신 시 스크롤 유지
 const bar=v=>{const n=Math.round(clamp(v,0,100)/10);return `<span class="bar">${'■'.repeat(n)}</span><span class="dim">${'□'.repeat(10-n)}</span> ${Math.round(v)}`};
@@ -221,7 +234,7 @@ function hud(){
  const y=2020+Math.floor(S.turn/2),h=S.turn%2?'하반기':'상반기';
  const spark=S.matHist.slice(-12).map(v=>'▁▂▃▄▅▆▇█'[clamp(Math.floor((v-50)/22),0,7)]).join('');
  const tl=TIER[S.tier].n+(S.disguise?' (위장 분할!)':S.grace>0&&S.tier>=2?` (졸업유예 ${S.grace}턴)`:'');
- return `<header class="hud"><div class="row"><b>📅 ${y}년 ${h}</b><span class="dim">턴 ${Math.min(S.turn+1,TURNS)}/${TURNS}</span><span>💰 <b style="color:${S.cash<.2?'var(--r)':'var(--y)'}">${fmt(S.cash)}</b></span><span>${TIER[S.tier].e} ${tl}</span><span>⚡ ${S.ap}/2</span><span class="top-r">${B(snd?'🔊':'🔇',()=>{snd=!snd;stay(rerender)})}</span></div>
+ return `<header class="hud"><div class="row"><b>📅 ${y}년 ${h}</b><span class="dim">턴 ${Math.min(S.turn+1,TURNS)}/${TURNS}</span><span>💰 <b style="color:${S.cash<.2?'var(--r)':'var(--y)'}">${fmt(S.cash)}</b></span><span>${bld(S.tier)} ${tl}</span><span>⚡ ${S.ap}/2</span><span class="top-r">${B(snd?'🔊':'🔇',()=>{snd=!snd;stay(rerender)})}</span></div>
  <div class="stats"><span>품질 ${bar(S.q)}</span><span>기술 ${bar(S.t)}</span><span>청렴 ${bar(S.integ)}</span><span>신뢰 ${bar(S.rep)}</span>${S.aff>0?`<span style="color:var(--p)">💗 ${bar(S.aff)}</span>`:''}</div>
  <div class="row" style="font-size:13px"><span>🔶 원자재(구리) 지수 <b>${Math.round(S.mat)}</b> <span style="color:var(--b)">${spark}</span></span><span>재고 ${S.stock}</span>${S.release?'<span class="badge">🏛️ 비축물자 방출중</span>':''}${S.mas?'<span class="badge g">🛒MAS</span>':''}${S.excellent?'<span class="badge g">🏅우수조달</span>':''}${S.innov?'<span class="badge b">💡혁신제품</span>':''}${S.global?'<span class="badge p">🌏해외</span>':''}${S.green?'<span class="badge g">🌱녹색</span>':''}</div></header>`}
 let rerender=()=>{};
@@ -250,7 +263,7 @@ function title(){S=null;const sv=store.get('pps_save',null),cnt=(o,t)=>[Object.k
  <p style="color:var(--p);font-size:17px">여러분 저 됐어요 — 낙찰됐어요!!</p><p class="dim">작은 선풍기 공방 사장님의 10년 공공조달 성장기</p>
  <p>${B('▶ 게임 시작 ◀',nameStep,'pri start')}</p>
  <p>${sv?B('⏯ 이어하기',()=>{S=sv;startTurn(true)}):''} ${B('📚 도감',()=>collection('end'))} ${B('❓ 게임 방법',help)}</p>
- <div class="progs">${prog('🏆 엔딩',cnt(col.end,ENDS))}${prog('📖 조달도감',cnt(col.dict,DICT))}${prog('📘 정책도감',cnt(col.pol,POL))}</div></div>
+ <div class="progs">${prog('🏆 엔딩',cnt(col.end,ENDS))}${prog('📖 조달도감',cnt(col.dict,DICT))}${prog('📘 정책도감',cnt(col.pol,POL))}${prog('🎖️ 칭호',cnt(col.ach,ACH))}</div></div>
  <p class="foot">2026 조달청 AI 게임·콘텐츠 공모전 출품작 · AI(Claude)를 활용해 제작<br>등장하는 기관·업체·인물과 2027년 이후 사건은 가상이며, 제도는 게임용으로 단순화했어요.</p>`,false)}
 function nameStep(){const go=()=>{newGame(document.getElementById('nm').value.trim());intro()};
  render(()=>dlg('sys','📝 <b>나라장터 업체 등록</b><br>사장님 회사 이름을 입력해 주세요.<br><input id="nm" class="nm-in" maxlength="10" value="시원공방">',B('등록하기 ▶',go,'pri')+' '+B('◀ 처음으로',title)),false);
@@ -262,10 +275,11 @@ function help(){render(()=>`<section class="panel"><h2>❓ 게임 방법</h2>
  <h3>성장의 딜레마</h3><p>연매출이 커지면 소기업 → 중소기업 → 중견기업 → 대기업. 규모가 줄어드는 건 <b>최근 3년 평균 매출</b>이 기준 아래로 떨어질 때예요. 설비와 기술은 매 반기 조금씩 낡으니 꾸준히 투자하세요! 하지만 중견기업이 되면 <b>중소기업 전용 시장과 혜택을 잃어요</b>. 성장할까, 지킬까?</p>
  <h3>수집</h3><p>엔딩 14종 · 조달도감 · 정책도감을 모아보세요. 💗 김주무관 루트도 있어요.</p>
  ${B('◀ 돌아가기',title,'pri')}</section>`,false)}
-function collection(tab){render(()=>{const tabs=B('🏆 엔딩',()=>collection('end'),tab==='end'?'on':'')+B('📖 조달도감',()=>collection('dict'),tab==='dict'?'on':'')+B('📘 정책도감',()=>collection('pol'),tab==='pol'?'on':'');
+function collection(tab){render(()=>{const tabs=B('🏆 엔딩',()=>collection('end'),tab==='end'?'on':'')+B('📖 조달도감',()=>collection('dict'),tab==='dict'?'on':'')+B('📘 정책도감',()=>collection('pol'),tab==='pol'?'on':'')+B('🎖️ 칭호',()=>collection('ach'),tab==='ach'?'on':'');
  let body='';
  if(tab==='end')body=Object.entries(ENDS).map(([k,v])=>col.end[k]?`<div class="col"><div class="e">${v.e}</div><b>${v.n}</b>${v.bonus?' <span class="badge p">보너스</span>':''}<br>${v.d}</div>`:`<div class="col lock"><div class="e">❔</div>???</div>`).join('');
  if(tab==='dict')body=Object.entries(DICT).map(([k,v])=>col.dict[k]?`<div class="col"><b>${k}</b><br>${v}</div>`:`<div class="col lock">??? <br><small>플레이하며 발견</small></div>`).join('');
+ if(tab==='ach')body=Object.entries(ACH).map(([k,v])=>col.ach[k]?`<div class="col"><div class="e">${v.e}</div><b>${v.n}</b><br>${v.d}</div>`:`<div class="col lock"><div class="e">❔</div>???<br><small>${v.d}</small></div>`).join('');
  if(tab==='pol')body=Object.entries(POL).map(([k,v])=>col.pol[k]?`<div class="col"><b>${v.n}</b><br>${v.d}</div>`:`<div class="col lock">??? <br><small>플레이하며 발견</small></div>`).join('');
  return `<section class="panel"><h2>📚 도감</h2>${tabs}<div class="grid" style="margin-top:10px">${body}</div><p>${B('◀ 돌아가기',S&&S.ended?()=>showEnding(S.ended):title,'pri')}</p></section>`},false)}
 
@@ -339,10 +353,19 @@ function bidTip(n){const h=(S.sajung||[]).slice(-5),avg=h.length?h.reduce((a,b)=
  return `${who}<br>"사정률은 매번 새로 추첨되지만 평균은 100% 근처예요${h.length?` (최근 평균 ${(avg*100).toFixed(2)}%)`:''}. 그래서 하한선은 기초금액의 <b>${est.toFixed(2)}%</b> 근처예요.
  ${n.comp>=8?`경쟁사가 ${n.comp}곳이나 되니 하한선에 바짝 붙이세요. <b>${(est+.4).toFixed(2)}~${(est+.8).toFixed(2)}%</b> 추천!`:`경쟁사가 ${n.comp}곳뿐이니 조금 여유 있게, <b>${(est+.7).toFixed(2)}~${(est+1.2).toFixed(2)}%</b> 정도면 안전해요.`}
  아래 <b>하한 미달 위험</b> 숫자도 꼭 보세요!"`}
+// 경쟁사 박사장 한마디 (턴 18 부도 전까지, 가끔)
+const RIVAL_Q={win:['쳇, 이번엔 운이 좋았구먼.','젊은 사람이 제법이야. 다음엔 안 봐줘.','하한선에 그렇게 붙인다고? …배짱 한번 좋구먼.','허, 우리 단골 학교를 가져가? 두고 보자고.'],
+ lose:['허허, 아직 멀었어. 나라장터 20년 짬밥은 그냥 생긴 게 아니야.','이번 건은 우리 거라네. 수고했어.','경쟁사 숫자를 잘 봐. 우리 같은 고참은 거기서 승부를 걸어.'],
+ under:['하한선 밑으로 쓰면 어떡하나. 덤핑은 업계 다 같이 망치는 거야.','너무 욕심부렸구먼. 예비가격은 내 맘대로 안 뽑힌다고.'],
+ qual:['가격만 싸면 다인 줄 알았나? 적격심사는 실적이야, 실적.']};
+function rivalQuip(k){if(S.turn>=18||Math.random()>.35)return '';let l=pick(RIVAL_Q[k]);
+ if(k==='win'&&S.refused&&Math.random()<.5)l='그때 들러리 제안 거절하더니… 실력은 있구먼.';
+ if(S.collusion&&!S.lenient&&Math.random()<.4)l='요즘 업계에 조사 소문 돌던데… 서로 입 조심하자고.';
+ return `<br><span style="color:#d9a0a0">🧓 박사장: "${l}"</span>`}
 function collusionOffer(){const n=S.cur.n;dict('들러리입찰');
  choose('rival',`"${S.name} 사장, 이번 '${n.item}' 건 말이야… 우리 업체들이 들러리 서줄 테니 넉넉하게 써서 가져가. 다음 건은 우리 차례고. 다들 그렇게 해~"`,[
  ['🤝 제안을 받아들인다',()=>{S.collusion++;(S.collTurns=S.collTurns||[]).push(S.turn);S.integ=clamp(S.integ-25,0,100);log('⚠️ 들러리 입찰 담합에 가담했다…');S.cur.picks=shuffle([...Array(15).keys()]).slice(0,2);resolveBid(true)}],
- ['🙅 거절한다 — 실력으로 붙자!',()=>{S.integ=clamp(S.integ+5,0,100);usePol('fair');say([['me','그런 건 안 합니다. 공정하게 붙읍시다.'],['rival','쳇, 순진하긴… 후회할 텐데.'],['kim','(나중에 들은 이야기) 거절 잘하셨어요! 조달청은 입찰 데이터를 분석해서 <b>담합을 잡아내요</b>. 걸리면 공공입찰 참가가 막혀요.']],bidScreen)}]])}
+ ['🙅 거절한다 — 실력으로 붙자!',()=>{S.refused=true;ach('fair');S.integ=clamp(S.integ+5,0,100);usePol('fair');say([['me','그런 건 안 합니다. 공정하게 붙읍시다.'],['rival','쳇, 순진하긴… 후회할 텐데.'],['kim','(나중에 들은 이야기) 거절 잘하셨어요! 조달청은 입찰 데이터를 분석해서 <b>담합을 잡아내요</b>. 걸리면 공공입찰 참가가 막혀요.']],bidScreen)}]])}
 
 function resolveBid(collude){const c=S.cur,n=c.n,cnt=Array(15).fill(0);
  c.picks.forEach(k=>cnt[k]++);
@@ -361,7 +384,7 @@ function resolveBid(collude){const c=S.cur,n=c.n,cnt=Array(15).fill(0);
  n.done=true;S.bidDone=true;usePol('nara');usePol('yega');dict('적격심사');
  const me=bids.find(b=>b.me),meRank=bids.indexOf(me);
  let res;
- if(winner&&winner.me){const first=!S.wins;res=contract(n,me.p);if(!S.lastTerm)res+=kimReact(first?'first':'win');S.lossStreak=0;if(n.type==='sme')usePol('sme_comp');sfx.win()}
+ if(winner&&winner.me){const first=!S.wins,streak=S.lossStreak||0,gap=(me.p-floorP)/n.base*100;res=contract(n,me.p);if(!S.lastTerm){if(gap<=.05&&!collude){res+=`<br>🎯 <b>하한선과 단 ${gap.toFixed(3)}%p 차이!</b> 칼같이 붙였어요.`;ach('knife')}res+=kimReact(first?'first':'win');if(streak>=5)ach('comeback')}S.lossStreak=0;if(n.type==='sme')usePol('sme_comp');sfx.win()}
  else{sfx.lose();res=me.st==='하한 미달'?`😵 하한선 미달! 추첨 결과 하한선이 <b>${(floorP/n.base*100).toFixed(3)}%</b>로 정해졌는데, <b>${c.rate.toFixed(3)}%</b>를 써서 무효예요. 예비가격이 높게 뽑히면 하한선도 올라가요!`:me.st==='적격심사 탈락'?`😢 1순위였지만 <b>적격심사 탈락</b>! ${NT[n.type].qReq}점 이상이 필요한데 ${qScore()}점이에요. (품질 + 신뢰 가점)`:`😢 아쉽게 탈락! 낙찰은 <b>${winner?winner.nm:'없음'}</b> (투찰률 ${winner?(winner.p/n.base*100).toFixed(3):'-'}%).`;const bestAI=bids.filter(b=>b.ok&&!b.me).reduce((m,b)=>Math.min(m,b.p),Infinity);
   if(me.st!=='적격심사 탈락'&&bestAI<Infinity)res+=`<br>🎯 이번 입찰의 정답 구간: <b>${(floorP/n.base*100).toFixed(3)}% ~ ${(bestAI/n.base*100).toFixed(3)}%</b> (하한선 이상, 1위 경쟁사 미만)`;
   S.lossStreak=(S.lossStreak||0)+1;res+=kimReact(S.lossStreak>=3?'streak':me.st==='하한 미달'?'under':me.st==='적격심사 탈락'?'qual':'close',{d:Math.abs(((me.st==='하한 미달'?floorP:winner?winner.p:me.p)-me.p)/n.base*100).toFixed(2)});
@@ -377,7 +400,7 @@ function resolveBid(collude){const c=S.cur,n=c.n,cnt=Array(15).fill(0);
  <p class="hint">📏 하한선 = 예정가격 × ${frp(n.type)} = 기초금액의 <b>${(floorP/n.base*100).toFixed(3)}%</b>. 이보다 낮게 쓴 업체는 덤핑으로 보고 <b>무효</b>, 하한선 이상 중 <b>가장 낮은 업체</b>가 낙찰이에요.</p>
  <table><tr><th>업체 <small>(위로 갈수록 비싸게 씀)</small></th><th>투찰률</th><th>결과</th></tr>${above.slice().reverse().map(row).join('')}
  <tr><td colspan="3" style="color:var(--r);text-align:center;border-top:2px dashed var(--r);border-bottom:2px dashed var(--r)">━━ 하한선 ${(floorP/n.base*100).toFixed(3)}% ━━ 이 아래는 무효</td></tr>${below.slice().reverse().map(row).join('')}</table>
- <p class="tw">${res}</p>${B('확인',hub,'pri')}</section>`);rerender()}
+ <p class="tw">${res}${collude?'':rivalQuip(winner&&winner.me?'win':me.st==='하한 미달'?'under':me.st==='적격심사 탈락'?'qual':'lose')}</p>${B('확인',hub,'pri')}</section>`);rerender()}
 
 // 원가 = 인건비(기술력↑ 절감) + 원자재(재고 먼저, 부족분은 그때 시세)
 function estCost(n){const units=Math.ceil(n.base*30),use=Math.min(S.stock,units);return {units,use,buy:(units-use)*.01*S.mat/100,labor:n.base*.4*(1-S.t/330),saved:use*.01*S.mat/100}}
@@ -388,8 +411,8 @@ function contract(n,price){const sp=NT[n.type]||NT.general,{use,buy,labor,saved}
   S.stock-=use;const dep=price*.1,loss=labor*.5+buy+dep;S.cash-=loss;S.rep=clamp(S.rep-15,0,100);S.integ=clamp(S.integ-3,0,100);S.banT=Math.max(S.banT||0,2);S.lastTerm=true;dict("계약해지","입찰참가자격제한");log(`${n.item} 계약 해지 → 손실 ${fmt(loss)}`);
   return `💥 <b>${n.item}</b> 낙찰은 됐지만… <b>품질 미달로 납품을 못 했어요!</b><br><small>공고 난이도 ${sp.diff} / 우리 품질 ${Math.round(S.q)}</small><br><span style="color:var(--r)">계약 해지 · 계약보증금 몰수 -${fmt(dep)} · 투입 원가 손실 -${fmt(labor*.5+buy)}<br>부정당업자 제재로 <b>다음 반기 입찰 참가 제한</b> · 신뢰 -15</span><br><span style="color:var(--p)">💬 ${kimName()}: "낙찰보다 중요한 건 약속한 물건을 제때, 제대로 납품하는 거예요. 품질부터 챙겨요."</span>`}
  S.stock-=use;const fail=Math.random()<rk.late,pen=fail?price*.1:0;
- const net=price-labor-buy-pen;S.cash+=net;S.halfRev+=price;S.wins++;S.total+=price;S.delivT=S.turn;if(n.type==='overseas')S.ow=(S.ow||0)+1;S.lastContract=price;S.rep=clamp(S.rep+(fail?-8:3),0,100);
- dict(fail?'지체상금':'납품검사');log(`${n.item} 계약 ${fmt(price)} → 순이익 ${fmt(net)}`);
+ const net=price-labor-buy-pen;S.cash+=net;S.halfRev+=price;S.wins++;S.total+=price;if(S.wins===1)ach('first');if(!S.yearBest||price>S.yearBest.price)S.yearBest={item:n.item,ag:n.ag||'공공기관',price};if(n.type==='overseas')ach('overseas');S.delivT=S.turn;if(n.type==='overseas')S.ow=(S.ow||0)+1;S.lastContract=price;S.rep=clamp(S.rep+(fail?-8:3),0,100);
+ dict(fail?'지체상금':'납품검사');if(!fail&&(S.okDeliv=(S.okDeliv||0)+1)>=10)ach('deliver');log(`${n.item} 계약 ${fmt(price)} → 순이익 ${fmt(net)}`);
  return `🎉 <b>${n.item}</b> 계약 ${fmt(price)}!<br><small>인건비 -${fmt(labor)} · 원자재 ${use?`재고 ${use}개 사용 + `:''}${buy>0?`부족분 시세 구매 -${fmt(buy)}`:"전부 재고로 해결"}${fail?` · <span style="color:var(--r)">납품 지연 지체상금 -${fmt(pen)}</span>`:' · 납품검사 합격 ✅'}</small><br>순이익 <b>${fmt(net)}</b>${use?`<br>📦 재고 덕분에 원자재 <b>${fmt(saved)}</b> 절약! (지금 시세로 샀다면 그만큼 더 들었어요)`:''}`}
 
 // ---------- 활동 ----------
@@ -400,7 +423,7 @@ const ACTS=[
  {n:'🔬 연구개발',d:'기술력↑ (원가 절감·혁신제품)',c:()=>cst(.06),run(){const g=Math.round((100-S.t)*0.15)+1.5;S.t=clamp(S.t+g,0,100);return `기술력 +${g}`}},
  {n:'🛠️ 품질관리',d:'품질↑ (적격심사·납품검사)',c:()=>cst(.06),run(){const g=Math.round((100-S.q)*0.15)+1.5;S.q=clamp(S.q+g,0,100);return `품질 +${g}`}},
  {n:'🏭 직접생산확인 신청',d:'공장 실사 → 중소기업자간 경쟁제품 참가 자격',show:()=>S.dpc===false,lock:()=>!isSME()?'중소기업만 가능':S.q<25&&'실사 기준 품질 25',c:()=>cst(.03),run(){S.dpc=true;usePol('direct');dict('직접생산확인');return '🏭 공장 실사 통과! 직접 생산하는 업체로 확인됐어요. 이제 <b>중소기업자간 경쟁제품</b> 공고에 참가할 수 있어요.'}},
- {n:'📦 원자재(구리) 구매',d:()=>`${TIER[S.tier].buy}개 · 지수 ${Math.round(S.mat)} ${S.mat<95?'(싸다! 쟁여두기 좋아요)':S.mat>115?'(비싸요…)':'(보통)'} · 계약 때 재고부터 써요`,c:()=>TIER[S.tier].buy*.01*S.mat/100,run(){S.stock+=TIER[S.tier].buy;return `원자재 +${TIER[S.tier].buy}`}},
+ {n:'📦 원자재(구리) 구매',d:()=>`${TIER[S.tier].buy}개 · 지수 ${Math.round(S.mat)} ${S.mat<95?'(싸다! 쟁여두기 좋아요)':S.mat>115?'(비싸요…)':'(보통)'} · 계약 때 재고부터 써요`,c:()=>TIER[S.tier].buy*.01*S.mat/100,run(){S.stock+=TIER[S.tier].buy;if(S.mat<=80)ach('trader');return `원자재 +${TIER[S.tier].buy}`}},
  {n:'🏛️ 비축물자 구매',d:()=>`${TIER[S.tier].buy}개 · 시세의 80% · 급등기 원가 방어!`,show:()=>S.release>0,lock:()=>!isSME()&&'중소기업만 가능',c:()=>TIER[S.tier].buy*.01*S.mat/100*.8,run(){S.stock+=TIER[S.tier].buy;usePol('stockpile');dict('비축물자');return `조달청 비축물자 ${TIER[S.tier].buy}개를 싸게 구입!`}},
  {n:'🏦 네트워크론 대출',d:()=>`최근 계약 ${fmt(S.lastContract||0)}의 80% · 다음 정산 때 이자 3% 붙여 상환`,show:()=>!S.loanBal,lock:()=>!S.lastContract&&'계약 실적 필요 (계약 1건당 1회)',c:()=>0,run(){const a=S.lastContract*.8;S.cash+=a;S.loanBal=a*1.03;S.lastContract=0;usePol('network');return `네트워크론 ${fmt(a)} 대출! 다음 반기 정산 때 ${fmt(S.loanBal)}을 갚아요.`}},
  {n:'☕ 김주무관 면담',d:'조달 정책 배우기 · 💗',c:()=>0,talk:1},
@@ -482,7 +505,7 @@ const DATES=[
  ['🏕️ 캠핑','밤하늘 별 보니까 좋네요. 근데 텐트 안이 좀 덥다…',[['🌀 공방 선풍기를 꺼낸다',14,'(조용히 돌아가는 소리) …이래서 학교들이 사장님 선풍기를 사는 거구나.'],['🔥 모닥불 앞에서 다음 입찰 얘기를 꺼낸다',6,'여기까지 와서 입찰 얘기요? 별 보러 온 거잖아요.']]],
  ['📞 밤 11시 통화','(전화) 자려고 누웠는데 목소리 듣고 싶어서요. …방금 그거 취소. 아니, 취소 안 할래요.',[['📱 "저도요. 오늘 하루 어땠어요?"',14,'…별일 없었어요. 근데 이렇게 물어봐 주는 사람이 있다는 게 별일이네요.'],['😴 "내일 개찰 있잖아요, 얼른 자요"',6,'…네. 사장님은 제 일정까지 다 꿰고 있네요. 잘 자요.']]]];
 function dateScene(){const [place,line0,opts]=pick(DATES),line=(S.romance==='hidden'&&!/공방|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
- choose('kimb',`<b>${place}</b><br>${line}`,opts.map(([l,d,reply])=>[l,()=>{S.aff=clamp(S.aff+d,0,100);log(`💗 ${place} 데이트`);
+ choose('kimb',`<b>${place}</b><br>${line}`,opts.map(([l,d,reply])=>[l,()=>{S.aff=clamp(S.aff+d,0,100);log(`💗 ${place} 데이트`);S.dateSeen=S.dateSeen||[];if(!S.dateSeen.includes(place))S.dateSeen.push(place);if(S.dateSeen.length>=5)ach('dates');
   const after=()=>{if(S.romance==='hidden'&&Math.random()<.35){S.hiddenRisk=(S.hiddenRisk||0)+.05;return say([['sys','📸 찰칵… 어디선가 셔터 소리가 들린 것 같아요. (감사 위험 증가)']],romanceCheck)}romanceCheck()};
   say([['kims',reply]],after)},'pink']))}
 function romanceCheck(){
@@ -508,7 +531,7 @@ function settle(){const m=[];
  if((S.collTurns||[]).some(t=>S.turn-t===10)){dict('제척기간');m.push('⏳ 5년 전 담합 건의 <b>처분 기한이 지났어요</b>. 이제 제재할 수 없지만… 마음 한구석이 무거워요.')}
  if(S.stopT>0){S.stopT--;m.push(S.stopT?`⛔ 거래정지 ${S.stopT}턴 남음`:'✅ 거래정지가 풀렸어요. 품질부터 챙겨요!')}
  if(S.inspect&&S.delivT===S.turn&&Math.random()<.35){dict('거래정지');const q=S.q;
-  if(q>=55){S.rep=clamp(S.rep+5,0,100);m.push(`🔎 <b>납품 불시점검 합격</b> (품질 ${Math.round(q)}) — 신뢰 +5`)}
+  if(q>=55){S.rep=clamp(S.rep+5,0,100);if((S.insOk=(S.insOk||0)+1)>=2)ach('inspect');m.push(`🔎 <b>납품 불시점검 합격</b> (품질 ${Math.round(q)}) — 신뢰 +5`)}
   else if(q>=40){S.rep=clamp(S.rep-5,0,100);m.push(`🔎 납품 불시점검 <b>경고</b> (품질 ${Math.round(q)}) — 일부 규격 미달, 신뢰 -5`)}
   else{S.rep=clamp(S.rep-10,0,100);S.stopT=1;m.push(`🔎 납품 불시점검 <b>불합격</b> (품질 ${Math.round(q)}) — 규격 미달품 납품으로 <b>거래정지 1턴</b>, 신뢰 -10`)}}
  if(S.banT>0){S.banT--;m.push(S.banT?`🚫 입찰참가자격 제한 ${S.banT}턴 남음`:'✅ 입찰참가자격 제한이 끝났어요. 다시 공정하게!')}
@@ -520,7 +543,7 @@ function settle(){const m=[];
  const nt=raw>=old?raw:Math.max(raw,Math.min(old,tierOf(avg3)));S.tier=nt;
  if(raw<old&&nt===old)m.push(`🛡️ 올해 매출은 줄었지만 <b>최근 3년 평균 ${fmt(avg3)}</b> 덕분에 ${TIER[old].n} 규모를 유지해요.`);
  if(S.grace>0){S.grace--;if(!S.grace&&S.tier>=2)m.push('🎓 졸업 유예 종료 — 이제 중소기업 혜택은 없어요.')}
- if(nt!==old)m.push(`${TIER[nt].e} 회사 규모: ${TIER[old].n} → <b>${TIER[nt].n}</b>`);
+ if(nt!==old)m.push(`${bld(old,1)} → ${bld(nt,1)}<br>회사 규모: ${TIER[old].n} → <b>${TIER[nt].n}</b>`);if(nt===3)ach('big');
  if(S.loanBal){S.cash-=S.loanBal;m.push(`🏦 네트워크론 상환 -${fmt(S.loanBal)}`);S.loanBal=0}
  // 자금이 바닥나면: 첫 1회는 창업 지원자금, 그다음부터는 최근 계약을 근거로 네트워크론(조달청 제도)
  if(S.cash<0&&!S.loan){S.loan=true;S.cash+=1.5;m.push('🆘 자금이 바닥나 <b>창업 지원자금 1.5억</b>을 받았어요. (단 한 번뿐!) 계약을 따면 조달청 <b>네트워크론</b>도 쓸 수 있어요.')}
@@ -529,6 +552,7 @@ function settle(){const m=[];
 const post=[];
  if(nt>old&&nt>(S.tierMax||0)){S.tierMax=nt;const L={1:'중소기업 승급 축하드려요! 이제 <b>중소기업자간 경쟁제품</b> 시장이 사장님 무대예요.',2:'중견기업이라니! 처음 공방에서 뵌 게 엊그제 같은데… 대형 공고에도 도전해 보세요.',3:'대기업… 진짜 해내셨네요. 이제 협력업체와의 <b>상생</b>도 꼭 챙겨주세요. 약속!'};post.push(d=>say([['kims',L[nt]]],d))}
  if(S.turn%2===1&&S.rep>=70&&S.wins>=3)post.push(d=>{S.rep=clamp(S.rep+5,0,100);S.integ=clamp(S.integ+3,0,100);sfx.win();say([['news',`<b>🏆 ${2020+Math.floor(S.turn/2)} 올해의 우수조달기업 시상식</b><br>${S.name}이(가) 성실 납품 기업으로 표창을 받았어요! 신뢰 +5, 청렴 +3`],['kims','무대 위 사장님, 완전 멋있었어요! 사진 찍어뒀어요. 업무용이에요, 업무용!']],d)});
+ if(S.turn%2===1){m.unshift(headline(old,nt));S.yearBest=null;S.yearWins0=S.wins}
  if(S.mas&&S.turn%2===1&&!S.masNew)post.push(negotiation);S.masNew=false;
  if(old<=1&&nt>=2&&!S.disguise&&!S.graceUsed)post.push(graduation);
  if(act&&!S.lenient&&Math.random()<.3)post.push(leniency);
@@ -541,9 +565,17 @@ function leniency(done){dict('자진신고감면');
   say([['audit','1순위 자진신고로 과징금은 <b>면제</b>, 입찰참가자격 제한은 <b>2턴으로 감경</b>합니다. 앞으로 성실히 협조해 주세요.'],['me','…이제야 발 뻗고 잘 수 있겠다.']],done)},'pri'],
  ['🤐 모른 척 버틴다',()=>{if(Math.random()<.3){dict('입찰참가자격제한');return say([['rival','미안하게 됐수다. <b>내가 먼저 자진신고했거든.</b> 감면은 1등만 받는 거 알지?'],['audit','자진신고 자료로 귀사의 담합이 확인됐습니다.']],()=>ending('banned'))}
   say([['sys','…아직은 조용해요. 하지만 조사는 계속될지도 몰라요.']],done)}]])}
+// 하반기 정산 맨 위에 올해 회사 기사 한 줄
+function headline(old,nt){const y=2020+Math.floor(S.turn/2),b=S.yearBest,nm=S.name,wins=S.wins-(S.yearWins0||0);let h;
+ if(nt>old)h=`${nm}, ${TIER[nt].n} 진입… "작은 공방에서 시작했습니다"`;
+ else if(b&&b.price>=5)h=`${nm}, ${b.ag} '${b.item}' ${fmt(b.price)} 수주… 올해 ${wins}건 낙찰`;
+ else if(b)h=pick([`${b.ag}에 ${nm} 선풍기 납품… "소리가 거의 안 나요"`,`${nm}, '${b.item}' 납품 완료… 올해 ${wins}건 낙찰`]);
+ else h=pick([`${nm}, 올해는 숨 고르기… "내년엔 다릅니다"`,`나라장터 경쟁 치열… ${nm} 올해 낙찰 0건`]);
+ if(S.green&&Math.random()<.3)h=`${nm}, 친환경 공정 전환 효과… 녹색제품 주문 늘어`;
+ return `📰 <b>[조달일보 ${y}]</b> ${h}`}
 function negotiation(done){dict("가격협상");usePol("nego");const mm=S.masM||.25,p=negoP();
  choose("sys",`🤝 <b>MAS 계약 갱신 협상</b><br>조달청 계약관이 내년 종합쇼핑몰 납품단가를 협상하자고 해요. 지금 쇼핑몰 이익률은 <b>${Math.round(mm*100)}%</b>.<br><small>※ MAS 단가는 원가·시장가격 근거를 두고 조달청과 협상해서 정해요.</small>`,[
-  [`📊 원가·시장가격 자료로 설득한다 (성공률 ${Math.round(p*100)}%)`,()=>{if(mm<.45&&Math.random()<p){S.masM=Math.min(.45,mm+.05);S.rep=clamp(S.rep+3,0,100);say([["sys",`협상 성공! 근거 자료가 탄탄했어요. 이익률 <b>${Math.round(S.masM*100)}%</b>, 신뢰 +3`]],done)}else say([["sys",mm>=.45?"이미 최고 수준 단가예요. 계약관: \"이 단가면 충분히 합리적입니다.\"":"계약관: \"시장가격 조사 결과, 인상 근거가 부족합니다.\" 단가는 그대로예요."]],done)},"pri"],
+  [`📊 원가·시장가격 자료로 설득한다 (성공률 ${Math.round(p*100)}%)`,()=>{if(mm<.45&&Math.random()<p){S.masM=Math.min(.45,mm+.05);if(S.masM>=.45)ach('nego');S.rep=clamp(S.rep+3,0,100);say([["sys",`협상 성공! 근거 자료가 탄탄했어요. 이익률 <b>${Math.round(S.masM*100)}%</b>, 신뢰 +3`]],done)}else say([["sys",mm>=.45?"이미 최고 수준 단가예요. 계약관: \"이 단가면 충분히 합리적입니다.\"":"계약관: \"시장가격 조사 결과, 인상 근거가 부족합니다.\" 단가는 그대로예요."]],done)},"pri"],
   ["💪 단가를 크게 올려달라고 버틴다 (성공률 25%)",()=>{if(Math.random()<.25){S.masM=Math.min(.45,mm+.1);say([["sys",`계약관이 한발 물러섰어요. 이익률 <b>${Math.round(S.masM*100)}%</b>!`]],done)}else{S.masPause=2;S.rep=clamp(S.rep-5,0,100);say([["sys","협상 결렬… 계약이 갱신되지 않아 <b>1년간 쇼핑몰 주문이 끊겨요</b>. 신뢰 -5"]],done)}}],
   ["🙆 계약관 제시 단가를 받아들인다",()=>{S.rep=clamp(S.rep+2,0,100);say([["sys","원만하게 갱신했어요. 신뢰 +2"]],done)}]])}
 function graduation(done){dict('졸업유예','위장중소기업');
@@ -612,7 +644,7 @@ function ending(id){const ids=[id];
 function showEnding({ids,fresh}){const used=Object.keys(S.polUsed).length,tot=Object.keys(POL).length;
  rerender=()=>render(()=>`<section class="panel" style="text-align:center"><p class="dim">${2020+Math.floor(Math.min(S.turn,TURNS-1)/2)}년 · ${S.name}</p>
  ${ids.map(k=>`<div class="big">${ENDS[k].e}</div><h2>${ENDS[k].bonus?'[보너스] ':''}${ENDS[k].n} ${fresh.includes(k)?'<span class="badge">NEW</span>':''}</h2><p>${ENDS[k].d}</p>`).join('<hr style="border-color:var(--line)">')}
- <p>최종 규모 ${TIER[S.tier].e} ${TIER[S.tier].n} · 잔고 ${fmt(S.cash)} · 누적 계약 ${fmt(S.total)} (${S.wins}건)</p></section>
+ <p>${bld(Math.max(S.tier,S.tierMax||0),1)}<br>최종 규모 ${TIER[S.tier].n} · 잔고 ${fmt(S.cash)} · 누적 계약 ${fmt(S.total)} (${S.wins}건)</p></section>
  <section class="panel"><h2>📘 이번 판에 활용한 조달 정책 ${used}/${tot}</h2><div class="grid">${Object.entries(POL).map(([k,v])=>`<div class="col ${S.polUsed[k]?'':'lock'}">${S.polUsed[k]?'✅':'⬜'} ${v.n}</div>`).join('')}</div>
  <p class="dim">회색 정책은 다음 판에 도전해 보세요!</p>
  ${B('🔁 다시 하기',title,'pri')} ${B('📚 도감 보기',()=>collection('end'))}</section>`,false);rerender()}
