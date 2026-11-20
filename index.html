@@ -509,7 +509,7 @@ const DATES=[
  ['🏸 퇴근 후 배드민턴','청사 동호회에서 배드민턴 배웠어요. 봐주지 마세요.',[['🏸 진지하게 붙고, 지면 깔끔하게 인정한다',13,'공정한 경쟁 좋네요! 졌으니까 음료는 사장님이 사요.'],['🙃 일부러 져준다',6,'…일부러 진 거 다 보였어요. 그거 담합이에요, 담합.']]],
  ['🏕️ 캠핑','밤하늘 별 보니까 좋네요. 근데 텐트 안이 좀 덥다…',[['🌀 공방 선풍기를 꺼낸다',14,'(조용히 돌아가는 소리) …이래서 학교들이 사장님 선풍기를 사는 거구나.'],['🔥 모닥불 앞에서 다음 입찰 얘기를 꺼낸다',6,'여기까지 와서 입찰 얘기요? 별 보러 온 거잖아요.']]],
  ['📞 밤 11시 통화','(전화) 자려고 누웠는데 목소리 듣고 싶어서요. …방금 그거 취소. 아니, 취소 안 할래요.',[['📱 "저도요. 오늘 하루 어땠어요?"',14,'…별일 없었어요. 근데 이렇게 물어봐 주는 사람이 있다는 게 별일이네요.'],['😴 "내일 개찰 있잖아요, 얼른 자요"',6,'…네. 사장님은 제 일정까지 다 꿰고 있네요. 잘 자요.']]]];
-function dateScene(){S.dateT=S.turn;S.contactT=S.turn;const [place,line0,opts]=pick(DATES),line=(S.romance==='hidden'&&!/공방|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
+function dateScene(){S.dateT=S.turn;S.contactT=S.turn;const fresh=DATES.filter(d=>!(S.dateSeen||[]).includes(d[0])),[place,line0,opts]=pick(fresh.length?fresh:DATES),line=(S.romance==='hidden'&&!/공방|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
  choose('kimb',`<b>${place}</b><br>${line}`,opts.map(([l,d,reply])=>[l,()=>{S.aff=clamp(S.aff+d,0,100);log(`💗 ${place} 데이트`);S.dateSeen=S.dateSeen||[];if(!S.dateSeen.includes(place))S.dateSeen.push(place);if(S.dateSeen.length>=5)ach('dates');
   const after=()=>{if(S.romance==='hidden'&&Math.random()<.35){S.hiddenRisk=(S.hiddenRisk||0)+.05;return say([['sys','📸 찰칵… 어디선가 셔터 소리가 들린 것 같아요. (감사 위험 증가)']],romanceCheck)}romanceCheck()};
   say([['kims',reply]],after)},'pink']))}
