@@ -86,6 +86,7 @@ button.start{font-size:20px;padding:12px 30px;text-align:center;animation:blink 
 .toast{background:#0b0d16;border:2px solid var(--y);color:var(--y);padding:6px 10px;font-size:13px;box-shadow:3px 3px 0 #000;animation:reveal .3s steps(8)}
 .top-r{margin-left:auto}
 .bld{width:24px;height:24px;image-rendering:pixelated;vertical-align:middle}.bld.big{width:64px;height:64px}
+html.bigtext #app,html.bigtext .toasts{zoom:1.25}html.bigtext #app{width:80vw;max-width:688px}html.bigtext .hud .stats{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}@media (max-width:560px){html.bigtext #app,html.bigtext .toasts{zoom:1.12}html.bigtext #app{width:auto;max-width:none}html.bigtext .cards{grid-template-columns:1fr}html.bigtext .hud .stats{grid-template-columns:1fr}}
 .foot{text-align:center;font-size:12px;color:var(--dim);margin-top:24px}
 @media (max-width:560px){.yega{grid-template-columns:repeat(3,1fr)}.dlg{flex-direction:column}.por{display:flex;gap:10px;align-items:center}.por img,.por .emo{width:64px;height:64px;line-height:64px;font-size:36px}.title h1{font-size:26px}}
 </style>
@@ -230,12 +231,15 @@ const app=document.getElementById('app');
 function milestones(){S.m100=S.m100||{};[['q','🏆 품질 100 달성! 명품 선풍기 공방','q100'],['t','🏆 기술 100 달성! 업계 최고 기술력','t100'],['integ','🕊️ 청렴 100 달성!','clean']].forEach(([k,msg,a])=>{if(S[k]>=100&&!S.m100[k]){S.m100[k]=1;if(!ach(a))toast(msg);sfx.win()}})}
 function render(fn,hudOn=true){CB=[];if(S&&hudOn)milestones();const main=fn();app.innerHTML=(S&&hudOn?hud():'')+main+(S&&hudOn?`<div class="log">${S.log.slice(-5).reverse().map(l=>'· '+l).join('<br>')}</div>`:'');window.scrollTo(0,0)}
 const stay=f=>{const y=window.scrollY;f();window.scrollTo(0,y)}; // 같은 화면 갱신 시 스크롤 유지
+// 큰 글씨: 화면 전체 1.25배 (브라우저에 기억)
+let big=store.get("pps_big",false);const applyBig=()=>document.documentElement.classList.toggle("bigtext",!!big);applyBig();
+const flipBig=()=>{big=!big;store.set("pps_big",big);applyBig()};
 const bar=v=>{const n=Math.round(clamp(v,0,100)/10);return `<span class="bar">${'■'.repeat(n)}</span><span class="dim">${'□'.repeat(10-n)}</span> ${Math.round(v)}`};
 function hud(){
  const y=2020+Math.floor(S.turn/2),h=S.turn%2?'하반기':'상반기';
  const spark=S.matHist.slice(-12).map(v=>'▁▂▃▄▅▆▇█'[clamp(Math.floor((v-50)/22),0,7)]).join('');
  const tl=TIER[S.tier].n+(S.disguise?' (위장 분할!)':S.grace>0&&S.tier>=2?` (졸업유예 ${S.grace}턴)`:'');
- return `<header class="hud"><div class="row"><b>📅 ${y}년 ${h}</b><span class="dim">턴 ${Math.min(S.turn+1,TURNS)}/${TURNS}</span><span>💰 <b style="color:${S.cash<.2?'var(--r)':'var(--y)'}">${fmt(S.cash)}</b></span><span>${bld(S.tier)} ${tl}</span><span>⚡ ${S.ap}/2</span><span class="top-r">${B(snd?'🔊':'🔇',()=>{snd=!snd;stay(rerender)})}</span></div>
+ return `<header class="hud"><div class="row"><b>📅 ${y}년 ${h}</b><span class="dim">턴 ${Math.min(S.turn+1,TURNS)}/${TURNS}</span><span>💰 <b style="color:${S.cash<.2?'var(--r)':'var(--y)'}">${fmt(S.cash)}</b></span><span>${bld(S.tier)} ${tl}</span><span>⚡ ${S.ap}/2</span><span class="top-r">${B("🔠",()=>{flipBig();stay(rerender)},big?"on":"")} ${B(snd?'🔊':'🔇',()=>{snd=!snd;stay(rerender)})}</span></div>
  <div class="stats"><span>품질 ${bar(S.q)}</span><span>기술 ${bar(S.t)}</span><span>청렴 ${bar(S.integ)}</span><span>신뢰 ${bar(S.rep)}</span>${S.aff>0?`<span style="color:var(--p)">💗 ${bar(S.aff)}</span>`:''}</div>
  <div class="row" style="font-size:13px"><span>🔶 원자재(구리) 지수 <b>${Math.round(S.mat)}</b> <span style="color:var(--b)">${spark}</span></span><span>재고 ${S.stock}</span>${S.release?'<span class="badge">🏛️ 비축물자 방출중</span>':''}${S.mas?'<span class="badge g">🛒MAS</span>':''}${S.excellent?'<span class="badge g">🏅우수조달</span>':''}${S.innov?'<span class="badge b">💡혁신제품</span>':''}${S.global?'<span class="badge p">🌏해외</span>':''}${S.green?'<span class="badge g">🌱녹색</span>':''}</div></header>`}
 let rerender=()=>{};
@@ -263,7 +267,7 @@ function title(){S=null;const sv=store.get('pps_save',null),cnt=(o,t)=>[Object.k
  <h1><img class="fan" src="${fanImg()}" alt="">사장님 낙찰입니다!<img class="fan" src="${fanImg()}" alt=""></h1>
  <p style="color:var(--p);font-size:17px">여러분 저 됐어요 — 낙찰됐어요!!</p><p class="dim">작은 선풍기 공방 사장님의 10년 공공조달 성장기</p>
  <p>${B('▶ 게임 시작 ◀',nameStep,'pri start')}</p>
- <p>${sv?B('⏯ 이어하기',()=>{S=sv;startTurn(true)}):''} ${B('📚 도감',()=>collection('end'))} ${B('❓ 게임 방법',help)}</p>
+ <p>${sv?B('⏯ 이어하기',()=>{S=sv;startTurn(true)}):''} ${B('📚 도감',()=>collection('end'))} ${B('❓ 게임 방법',help)} ${B(big?'🔠 큰 글씨 켜짐':'🔠 큰 글씨',()=>{flipBig();title()},big?'on':'')}</p>
  <div class="progs">${prog('🏆 엔딩',cnt(col.end,ENDS))}${prog('📖 조달도감',cnt(col.dict,DICT))}${prog('📘 정책도감',cnt(col.pol,POL))}${prog('🎖️ 칭호',cnt(col.ach,ACH))}</div></div>
  <p class="foot">2026 조달청 AI 게임·콘텐츠 공모전 출품작 · AI(Claude)를 활용해 제작<br>등장하는 기관·업체·인물과 2027년 이후 사건은 가상이며, 제도는 게임용으로 단순화했어요.</p>`,false)}
 function nameStep(){const go=()=>{newGame(document.getElementById('nm').value.trim());intro()};
