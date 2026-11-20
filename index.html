@@ -202,7 +202,9 @@ let CB=[];
 const B=(label,fn,cls='',dis=false)=>{CB.push(fn);return `<button class="${cls}" data-cb="${CB.length-1}" ${dis?'disabled':''}>${label}</button>`};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-cb]');if(b&&!b.disabled){sfx.click();CB[+b.dataset.cb]()}});
 const app=document.getElementById('app');
-function render(fn,hudOn=true){CB=[];const main=fn();app.innerHTML=(S&&hudOn?hud():'')+main+(S&&hudOn?`<div class="log">${S.log.slice(-5).reverse().map(l=>'· '+l).join('<br>')}</div>`:'');window.scrollTo(0,0)}
+// 품질·기술 100 첫 달성 축하 (한 판에 한 번씩)
+function milestones(){S.m100=S.m100||{};[['q','🏆 품질 100 달성! 명품 선풍기 공방'],['t','🏆 기술 100 달성! 업계 최고 기술력']].forEach(([k,msg])=>{if(S[k]>=100&&!S.m100[k]){S.m100[k]=1;toast(msg);sfx.win()}})}
+function render(fn,hudOn=true){CB=[];if(S&&hudOn)milestones();const main=fn();app.innerHTML=(S&&hudOn?hud():'')+main+(S&&hudOn?`<div class="log">${S.log.slice(-5).reverse().map(l=>'· '+l).join('<br>')}</div>`:'');window.scrollTo(0,0)}
 const stay=f=>{const y=window.scrollY;f();window.scrollTo(0,y)}; // 같은 화면 갱신 시 스크롤 유지
 const bar=v=>{const n=Math.round(clamp(v,0,100)/10);return `<span class="bar">${'■'.repeat(n)}</span><span class="dim">${'□'.repeat(10-n)}</span> ${Math.round(v)}`};
 function hud(){
