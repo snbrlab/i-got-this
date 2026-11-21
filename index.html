@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>사장님 낙찰입니다!</title>
-<meta name="description" content="작은 선풍기 공방 사장님의 10년 공공조달 성장기. 2026 조달청 AI 게임·콘텐츠 공모전 출품작">
+<meta name="description" content="작은 선풍기 공장 사장님의 10년 공공조달 성장기. 2026 조달청 AI 게임·콘텐츠 공모전 출품작">
 <meta property="og:title" content="사장님 낙찰입니다!">
 <meta property="og:description" content="복수예비가격·낙찰하한율을 직접 체험하는 텍스트·도트 조달 시뮬레이션">
 <meta name="theme-color" content="#10131f">
@@ -111,7 +111,7 @@ const pct=(x,d=2)=>(x>=0?'+':'')+(x*100).toFixed(d)+'%';
 // ---------- 저장 ----------
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 let col=store.get('pps_col',{end:{},dict:{},pol:{}});col.ach=col.ach||{};
-const ACH={first:{e:'🎉',n:'첫 계약',d:'공공기관과 첫 계약을 맺었어요.'},knife:{e:'🎯',n:'칼같은 투찰',d:'하한선과 0.05%p 이내 차이로 낙찰받았어요.'},comeback:{e:'🔥',n:'칠전팔기',d:'5연패 뒤에 낙찰받았어요.'},trader:{e:'📦',n:'원자재 타짜',d:'원자재 지수 80 이하에서 구리를 사들였어요.'},q100:{e:'🛠️',n:'명품 공방',d:'품질 100을 찍었어요.'},t100:{e:'🔬',n:'기술 명장',d:'기술 100을 찍었어요.'},clean:{e:'🕊️',n:'청렴 100',d:'청렴도 100을 달성했어요.'},deliver:{e:'🚚',n:'무지체 납품왕',d:'지체 없이 납품을 10번 해냈어요.'},nego:{e:'🤝',n:'협상의 달인',d:'쇼핑몰 이익률을 최고 45%까지 끌어올렸어요.'},overseas:{e:'🌏',n:'바다 건너 바람',d:'해외조달 공고를 처음 따냈어요.'},fair:{e:'🙅',n:'정정당당',d:'담합 제안을 거절했어요.'},inspect:{e:'🔎',n:'불시점검 프리패스',d:'불시점검에 2번 합격했어요.'},dates:{e:'💗',n:'데이트 코스 마스터',d:'서로 다른 데이트를 5번 해봤어요.'},big:{e:'🏙️',n:'공방에서 빌딩까지',d:'작은 공방을 대기업으로 키웠어요.'}};
+const ACH={first:{e:'🎉',n:'첫 계약',d:'공공기관과 첫 계약을 맺었어요.'},knife:{e:'🎯',n:'칼같은 투찰',d:'하한선과 0.05%p 이내 차이로 낙찰받았어요.'},comeback:{e:'🔥',n:'칠전팔기',d:'5연패 뒤에 낙찰받았어요.'},trader:{e:'📦',n:'원자재 타짜',d:'원자재 지수 80 이하에서 구리를 사들였어요.'},q100:{e:'🛠️',n:'명품 선풍기',d:'품질 100을 찍었어요.'},t100:{e:'🔬',n:'기술 명장',d:'기술 100을 찍었어요.'},clean:{e:'🕊️',n:'청렴 100',d:'청렴도 100을 달성했어요.'},deliver:{e:'🚚',n:'무지체 납품왕',d:'지체 없이 납품을 10번 해냈어요.'},nego:{e:'🤝',n:'협상의 달인',d:'쇼핑몰 이익률을 최고 45%까지 끌어올렸어요.'},overseas:{e:'🌏',n:'바다 건너 바람',d:'해외조달 공고를 처음 따냈어요.'},fair:{e:'🙅',n:'정정당당',d:'담합 제안을 거절했어요.'},inspect:{e:'🔎',n:'불시점검 프리패스',d:'불시점검에 2번 합격했어요.'},dates:{e:'💗',n:'데이트 코스 마스터',d:'서로 다른 데이트를 5번 해봤어요.'},big:{e:'🏙️',n:'작은 공장에서 빌딩까지',d:'작은 공장을 대기업으로 키웠어요.'}};
 // 처음 얻은 칭호면 true
 function ach(id){if(col.ach[id])return false;col.ach[id]=1;saveCol();toast('🎖️ 칭호 획득: '+ACH[id].e+' '+ACH[id].n);return true}
 const saveCol=()=>store.set('pps_col',col);
@@ -126,7 +126,7 @@ const ROWS=["...hhhhhh...","..hhhhhhhh..",".hhhhhhhhhh.",".hssssssssh.","E","B",
 const EYES={n:".ssksssskss.",s:".skkksskkks."}, BL={n:".ssssssssss.",b:".spssssssps."};
 const SPR={me:{h:'#3b2416',c:'#d9a066',w:'#4f6fa8',rows:["...hhhhhh...","..hhhhhhhh..",".hhhhhhhhhh.","hhhsssssshhh","hhsksssskshh","hhsssssssshh","hhsssmmssshh","hh.ssssss.hh","hhwwccccwwhh",".wwwccccwww.","wwwwccccwwww","wwwwccccwwww"]},kim:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".ssksssskss.",".ssssssssss.","..sssmmsss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},kimb:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".ssksssskss.",".spssssssps.","..sssmmsss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},kims:{h:'#1c1c24',c:'#2f3e5c',w:'#ffffff',rows:["...hhhhhh...","..hhhhhhhhh.",".hhhhhhhhhh.",".hssssssssh.",".ssksssskss.",".spssssssps.","..ssmmmmss..","...ssssss...","..cccwwccc..",".cccwllwccc.","ccccwllwcccc","cccccllccccc"]},rival:{h:'#9a9a9a',c:'#6b2d2d',w:'#d4af37',e:'s',b:'n'},audit:{h:'#333',c:'#1f1f1f',w:'#cc3333',e:'n',b:'n'}};
 const sprCache={};
-// 회사 규모별 건물 도트: 공방 → 공장 → 중견 빌딩 → 대기업 타워
+// 회사 규모별 건물 도트: 작은 공장 → 공장 → 중견 빌딩 → 대기업 타워
 const BLD=[["............","............","............","....rrrr....","...rrrrrr...","..rrrrrrrr..",".rrrrrrrrrr.","..wwwwwwww..","..wggwwddw..","..wggwwddw..","..wwwwwddw..","kkkkkkkkkkkk"],
  ["............","..........k.","..........k.",".........bb.",".r..r..r.bb.",".rr.rr.rrbb.",".rrrrrrrrbb.",".bbbbbbbbbb.",".bggbggbggb.",".bbbbbbbbbb.",".bbbbddbbbb.","kkkkkkkkkkkk"],
  ["....bbbb....","...bbbbbb...","...bgbbgb...","...bbbbbb...","...bgbbgb...","...bbbbbb...","...bgbbgb...","...bbbbbb...","...bgbbgb...","...bbbbbb...","...bbddbb...","kkkkkkkkkkkk"],
@@ -194,12 +194,12 @@ const DICT={
  계약해지:'낙찰을 받고도 계약을 이행하지 못하면 계약이 해지되고 계약보증금이 국고로 귀속돼요. 부정당업자로 입찰참가자격이 제한될 수도 있어요.',
  거래정지:'규격 미달품 납품 등 계약을 제대로 이행하지 않은 업체에 일정 기간 조달 거래를 막는 제재.'};
 const ENDS={
- global:{e:'🌏',n:'글로벌 조달기업',d:'작은 선풍기 공방에서 시작해 세계 곳곳의 교실과 대피소에 바람을 보냈어요!'},
+ global:{e:'🌏',n:'글로벌 조달기업',d:'작은 선풍기 공장에서 시작해 세계 곳곳의 교실과 대피소에 바람을 보냈어요!'},
  innovation:{e:'💡',n:'혁신의 아이콘',d:'공공이 첫 고객이 되어준 혁신제품이 업계 표준이 됐어요.'},
  chaebol:{e:'🏙️',n:'대기업 회장님',d:'공공조달로 시작한 회사가 대기업이 됐어요. 이제 상생이 숙제예요.'},
  artisan:{e:'🌀',n:'강소기업 장인',d:'몸집 대신 실력을 키웠어요. 중소기업 시장의 숨은 강자!'},
  midsize:{e:'🏢',n:'든든한 중견기업',d:'중소기업을 졸업하고 탄탄한 중견기업으로 자리 잡았어요.'},
- ordinary:{e:'🔨',n:'동네 공방 사장님',d:'크게 성장하진 못했지만, 오늘도 조용하고 튼튼한 선풍기를 만들어요.'},
+ ordinary:{e:'🔨',n:'동네 공장 사장님',d:'크게 성장하진 못했지만, 오늘도 조용하고 튼튼한 선풍기를 만들어요.'},
  bankrupt:{e:'💸',n:'부도',d:'자금이 바닥났어요. 원자재 파동과 무리한 확장을 조심하세요.',bad:1},
  banned:{e:'🚫',n:'입찰참가자격 제한',d:'조달청 입찰 데이터 분석에 담합이 적발됐어요. 공공 입찰에 참가할 수 없게 됐어요.',bad:1},
  disguise:{e:'🎭',n:'위장 중소기업 적발',d:'회사를 쪼개 중소기업인 척한 게 들통났어요. 중소기업 시장은 진짜 중소기업의 것!',bad:1},
@@ -207,7 +207,7 @@ const ENDS={
  couple:{e:'💍',n:'조달 커플',d:'이해충돌 신고까지 정석대로! 공과 사를 지킨 두 사람, 행복하세요.',bonus:1},
  escaped:{e:'🫣',n:'들키지 않은 비밀',d:'담합은 끝내 드러나지 않았어요. 처분 기한도 지났고요. 그런데 왜 이렇게 찜찜할까요?',bonus:1},
  lenient:{e:'🙋',n:'다시 쓰는 장부',d:'잘못을 먼저 털어놓고 다시 시작했어요. 자진신고 제도가 담합의 고리를 끊어요.',bonus:1},
- love:{e:'💕',n:'사랑을 낙찰받다',d:'회사는 작아도, 인생 최고의 계약은 따냈어요. 오늘도 공방엔 선풍기 두 대가 나란히 돌아가요.'},
+ love:{e:'💕',n:'사랑을 낙찰받다',d:'회사는 작아도, 인생 최고의 계약은 따냈어요. 오늘도 공장엔 선풍기 두 대가 나란히 돌아가요.'},
  clean:{e:'🕊️',n:'청렴 명예의 전당',d:'담합·꼼수 없이 끝까지 공정하게 경쟁한 사장님. 조달청이 표창합니다.',bonus:1}};
 
 // ---------- 상태 ----------
@@ -228,7 +228,7 @@ const B=(label,fn,cls='',dis=false)=>{CB.push(fn);return `<button class="${cls}"
 document.addEventListener('click',e=>{const b=e.target.closest('[data-cb]');if(b&&!b.disabled){sfx.click();CB[+b.dataset.cb]()}});
 const app=document.getElementById('app');
 // 품질·기술 100 첫 달성 축하 (한 판에 한 번씩)
-function milestones(){S.m100=S.m100||{};[['q','🏆 품질 100 달성! 명품 선풍기 공방','q100'],['t','🏆 기술 100 달성! 업계 최고 기술력','t100'],['integ','🕊️ 청렴 100 달성!','clean']].forEach(([k,msg,a])=>{if(S[k]>=100&&!S.m100[k]){S.m100[k]=1;if(!ach(a))toast(msg);sfx.win()}})}
+function milestones(){S.m100=S.m100||{};[['q','🏆 품질 100 달성! 명품 선풍기 탄생','q100'],['t','🏆 기술 100 달성! 업계 최고 기술력','t100'],['integ','🕊️ 청렴 100 달성!','clean']].forEach(([k,msg,a])=>{if(S[k]>=100&&!S.m100[k]){S.m100[k]=1;if(!ach(a))toast(msg);sfx.win()}})}
 function render(fn,hudOn=true){CB=[];if(S&&hudOn)milestones();const main=fn();app.innerHTML=(S&&hudOn?hud():'')+main+(S&&hudOn?`<div class="log">${S.log.slice(-5).reverse().map(l=>'· '+l).join('<br>')}</div>`:'');window.scrollTo(0,0)}
 const stay=f=>{const y=window.scrollY;f();window.scrollTo(0,y)}; // 같은 화면 갱신 시 스크롤 유지
 // 큰 글씨: 화면 전체 1.25배 (브라우저에 기억)
@@ -265,7 +265,7 @@ function title(){S=null;const sv=store.get('pps_save',null),cnt=(o,t)=>[Object.k
  render(()=>`<div class="title"><div class="bubble">사장님, 낙찰입니다!</div>
  <div class="sprites"><img src="${sprite('me')}" alt="사장"><img src="${sprite('kim')}" alt="김주무관"><img src="${sprite('rival')}" alt="박사장"></div>
  <h1><img class="fan" src="${fanImg()}" alt="">사장님 낙찰입니다!<img class="fan" src="${fanImg()}" alt=""></h1>
- <p style="color:var(--p);font-size:17px">여러분 저 됐어요 — 낙찰됐어요!!</p><p class="dim">작은 선풍기 공방 사장님의 10년 공공조달 성장기</p>
+ <p style="color:var(--p);font-size:17px">여러분 저 됐어요 — 낙찰됐어요!!</p><p class="dim">작은 선풍기 공장 사장님의 10년 공공조달 성장기</p>
  <p>${B('▶ 게임 시작 ◀',nameStep,'pri start')}</p>
  <p>${sv?B('⏯ 이어하기',()=>{S=sv;startTurn(true)}):''} ${B('📚 도감',()=>collection('end'))} ${B('❓ 게임 방법',help)} ${B(big?'🔠 큰 글씨 켜짐':'🔠 큰 글씨',()=>{flipBig();title()},big?'on':'')}</p>
  <div class="progs">${prog('🏆 엔딩',cnt(col.end,ENDS))}${prog('📖 조달도감',cnt(col.dict,DICT))}${prog('📘 정책도감',cnt(col.pol,POL))}${prog('🎖️ 칭호',cnt(col.ach,ACH))}</div></div>
@@ -274,7 +274,7 @@ function nameStep(){const go=()=>{newGame(document.getElementById('nm').value.tr
  render(()=>dlg('sys','📝 <b>나라장터 업체 등록</b><br>사장님 회사 이름을 입력해 주세요.<br><input id="nm" class="nm-in" maxlength="10" value="시원공방">',B('등록하기 ▶',go,'pri')+' '+B('◀ 처음으로',title)),false);
  const el=document.getElementById('nm');el.focus();el.select();el.onkeydown=e=>{if(e.key==='Enter')go()}}
 function help(){render(()=>`<section class="panel"><h2>❓ 게임 방법</h2>
- <p>🌀 당신은 작은 선풍기 공방 사장님. <b>2020년부터 2029년까지(20턴, 1턴=반기)</b> 공공조달로 회사를 키우세요.</p>
+ <p>🌀 당신은 작은 선풍기 공장 사장님. <b>2020년부터 2029년까지(20턴, 1턴=반기)</b> 공공조달로 회사를 키우세요.</p>
  <h3>매 턴 할 일</h3><p>① <b>나라장터 공고</b> 중 하나에 입찰 (턴당 1회)<br>② <b>활동</b> 2번 (연구개발·품질관리·원자재 구매·김주무관 면담·각종 인증 신청)<br>③ <b>반기 마감</b> → 정산, 돌발 사건 발생</p>
  <h3>입찰 규칙 (실제 나라장터 방식을 단순화)</h3><p>예비가격 15개 중 2개를 고르고 투찰률을 써내요. 예비가격 금액은 개찰 전까지 비공개! 모두가 고른 번호 중 가장 많이 뽑힌 4개의 평균이 <b>예정가격</b>. 예정가격×낙찰하한율 이상이면서 <b>가장 낮은 가격</b>이 낙찰! 너무 낮으면 하한선 미달, 너무 높으면 경쟁에서 밀려요.</p>
  <h3>성장의 딜레마</h3><p>연매출이 커지면 소기업 → 중소기업 → 중견기업 → 대기업. 규모가 줄어드는 건 <b>최근 3년 평균 매출</b>이 기준 아래로 떨어질 때예요. 설비와 기술은 매 반기 조금씩 낡으니 꾸준히 투자하세요! 하지만 중견기업이 되면 <b>중소기업 전용 시장과 혜택을 잃어요</b>. 성장할까, 지킬까?</p>
@@ -485,7 +485,7 @@ function sparkEvent(){choose('kim','(퇴근길 청사 앞 카페. 줄을 서 있
 const MOMENTS=[
  ['🌙 야근하는 김주무관','(밤 9시, 청사 앞 편의점) 아직 퇴근 못 했어요. 내일 개찰이 세 건이라 서류 확인 중이에요.',[['☕ 따뜻한 캔커피를 건넨다',10,'앗, 직무관련자한테는 이런 것도 조심해야 돼서… 커피값은 계좌로 보낼게요. 그래도 마음은 진짜 고마워요.'],['🙇 "고생 많으세요" 인사만 하고 간다',4,'네, 사장님도 조심히 들어가세요.']]],
  ['📄 설명회 말실수','아까 설명회에서 하한율을 87.995%가 아니라 88.995%라고 했어요… 정정 공지 올려야 하나 고민 중이에요.',[['😊 "정정 공지 올리면 다들 더 꼼꼼히 읽을 거예요"',10,'…그렇게 생각하니까 덜 창피하네요. 지금 바로 올릴게요.'],['🤓 "네, 저도 메모하다가 이상하다 했어요"',3,'…역시 들으셨구나. (시무룩)']]],
- ['🎂 김주무관 생일','오늘 제 생일이에요. 아, 선물은 진짜 안 돼요. 청탁금지법 교육 담당이 저예요.',[['🎵 "그럼 축하 노래는 괜찮죠?"',12,'사무실 앞에서 그러면 어떡해요! (웃음) …올해 들은 것 중에 제일 좋았어요.'],['💐 꽃다발을 내민다',2,'이건 정말 못 받아요… 마음만 받을게요. 꽃은 사장님 공방에 두세요.']]],
+ ['🎂 김주무관 생일','오늘 제 생일이에요. 아, 선물은 진짜 안 돼요. 청탁금지법 교육 담당이 저예요.',[['🎵 "그럼 축하 노래는 괜찮죠?"',12,'사무실 앞에서 그러면 어떡해요! (웃음) …올해 들은 것 중에 제일 좋았어요.'],['💐 꽃다발을 내민다',2,'이건 정말 못 받아요… 마음만 받을게요. 꽃은 사장님 공장 사무실에 두세요.']]],
  ['🎤 설명회 대타','중소기업 설명회 연사가 갑자기 못 온대요. 사장님 첫 낙찰 경험담 10분만 해주실 수 있어요?',[['🙋 흔쾌히 무대에 선다',11,'질문이 끊이질 않았어요! 끝나고 명함 달라는 분들 줄 선 거 보셨어요?'],['😅 "저 발표는 좀…"',3,'괜찮아요, 제가 할게요. 대신 맨 앞줄에서 고개 끄덕여 주세요.']]],
  ['😢 민원 폭탄','오늘 민원 전화만 50통 받았어요. 떨어진 업체들이 다 제 탓이래요.',[['👂 아무 말 없이 끝까지 들어준다',12,'…들어주셔서 고마워요. 사실 해결책보다 이게 필요했어요.'],['💡 "개찰 결과 공개 링크를 보내주면 되잖아요"',4,'아… 네, 맞는 말씀이에요. (그냥 들어줬으면 했는데)']]],
  ['🐱 청사 앞 길고양이','이 고양이를 "예정이"라고 불러요. 예정가격의 예정이요.',[['😺 "그럼 저 녀석은 사정이라고 할게요"',11,'사정이! 예정이랑 사정이! …사장님 생각보다 웃기시네요.'],['🙄 "공무원 개그네요"',3,'…공무원 개그 무시하지 마세요.']]],
@@ -504,12 +504,12 @@ const DATES=[
  ['🍜 청사 앞 칼국수집','여기가 입찰 마감날 야근 메뉴예요. 사장님이랑 오니까 맛이 다르네요.',[['🥢 "앞으로 마감날엔 제가 데리러 올게요"',14,'…진짜죠? 방금 그거 구두 계약이에요.'],['🧾 "오늘은 각자 계산할까요?"',6,'아, 네… 원칙적으론 맞는데… 오늘은 좀 서운하네요.']]],
  ['🎬 영화관','공무원 나오는 영화 봤는데… 저런 결재가 하루 만에 날 리가 없어요.',[['😂 "옆에서 고증 지적하는 게 더 재밌었어요"',13,'…다음에도 같이 봐줄 거죠? 지적은 줄일게요.'],['🤫 "영화 볼 땐 조용히…"',6,'아, 죄송해요. 직업병이에요… (시무룩)']]],
  ['📚 북카페','저 요즘 국가계약법 해설서 읽어요. 사장님도 한 권 드릴까요?',[['📖 "주무관님이 밑줄 친 걸로 주세요"',13,'…그럼 제 메모도 다 보이는데. 부끄럽게.'],['😵 "법 얘기는 이제 그만…"',5,'흥, 그래도 하한율 바뀐 건 제 덕에 아셨잖아요.']]],
- ['🔧 사장님 공방','여기가 그 선풍기 만드는 데예요? 저도 하나 조립해 봐도 돼요?',[['🛠️ 옆에서 나사 조이는 법을 알려준다',15,'(완성된 선풍기를 켜며) 와, 돌아가요! 이거 제 거죠? …아, 이것도 선물이면 안 되는데. 정가로 살게요.'],['📋 "품질 기준 미달이라 불량 처리할게요"',6,'너무해요. 검수가 그렇게 깐깐하면 저보다 더 공무원 같아요.']]],
+ ['🔧 사장님 공장','여기가 그 선풍기 만드는 데예요? 저도 하나 조립해 봐도 돼요?',[['🛠️ 옆에서 나사 조이는 법을 알려준다',15,'(완성된 선풍기를 켜며) 와, 돌아가요! 이거 제 거죠? …아, 이것도 선물이면 안 되는데. 정가로 살게요.'],['📋 "품질 기준 미달이라 불량 처리할게요"',6,'너무해요. 검수가 그렇게 깐깐하면 저보다 더 공무원 같아요.']]],
  ['🛒 전통시장 장보기','온누리상품권 들고 왔어요. 이것도 다 지역경제 살리는 정책이에요.',[['🥟 만두 한 접시를 나눠 먹는다',13,'시장 만두는 진짜 반칙이에요. …사장님이랑 먹어서 더 그런가.'],['🧮 "상품권 할인율이 몇 %예요?"',5,'…또 숫자. 오늘은 숫자 금지라니까요.']]],
  ['🏸 퇴근 후 배드민턴','청사 동호회에서 배드민턴 배웠어요. 봐주지 마세요.',[['🏸 진지하게 붙고, 지면 깔끔하게 인정한다',13,'공정한 경쟁 좋네요! 졌으니까 음료는 사장님이 사요.'],['🙃 일부러 져준다',6,'…일부러 진 거 다 보였어요. 그거 담합이에요, 담합.']]],
- ['🏕️ 캠핑','밤하늘 별 보니까 좋네요. 근데 텐트 안이 좀 덥다…',[['🌀 공방 선풍기를 꺼낸다',14,'(조용히 돌아가는 소리) …이래서 학교들이 사장님 선풍기를 사는 거구나.'],['🔥 모닥불 앞에서 다음 입찰 얘기를 꺼낸다',6,'여기까지 와서 입찰 얘기요? 별 보러 온 거잖아요.']]],
+ ['🏕️ 캠핑','밤하늘 별 보니까 좋네요. 근데 텐트 안이 좀 덥다…',[['🌀 우리 공장 선풍기를 꺼낸다',14,'(조용히 돌아가는 소리) …이래서 학교들이 사장님 선풍기를 사는 거구나.'],['🔥 모닥불 앞에서 다음 입찰 얘기를 꺼낸다',6,'여기까지 와서 입찰 얘기요? 별 보러 온 거잖아요.']]],
  ['📞 밤 11시 통화','(전화) 자려고 누웠는데 목소리 듣고 싶어서요. …방금 그거 취소. 아니, 취소 안 할래요.',[['📱 "저도요. 오늘 하루 어땠어요?"',14,'…별일 없었어요. 근데 이렇게 물어봐 주는 사람이 있다는 게 별일이네요.'],['😴 "내일 개찰 있잖아요, 얼른 자요"',6,'…네. 사장님은 제 일정까지 다 꿰고 있네요. 잘 자요.']]]];
-function dateScene(){S.dateT=S.turn;S.contactT=S.turn;const fresh=DATES.filter(d=>!(S.dateSeen||[]).includes(d[0])),[place,line0,opts]=pick(fresh.length?fresh:DATES),line=(S.romance==='hidden'&&!/공방|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
+function dateScene(){S.dateT=S.turn;S.contactT=S.turn;const fresh=DATES.filter(d=>!(S.dateSeen||[]).includes(d[0])),[place,line0,opts]=pick(fresh.length?fresh:DATES),line=(S.romance==='hidden'&&!/공장|통화/.test(place)?'<small>(아는 사람 없는 옆 동네까지 와서, 주위를 한 번 둘러보고)</small><br>':'')+line0;
  choose('kimb',`<b>${place}</b><br>${line}`,opts.map(([l,d,reply])=>[l,()=>{S.aff=clamp(S.aff+d,0,100);log(`💗 ${place} 데이트`);S.dateSeen=S.dateSeen||[];if(!S.dateSeen.includes(place))S.dateSeen.push(place);if(S.dateSeen.length>=5)ach('dates');
   const after=()=>{if(S.romance==='hidden'&&Math.random()<.35){S.hiddenRisk=(S.hiddenRisk||0)+.05;return say([['sys','📸 찰칵… 어디선가 셔터 소리가 들린 것 같아요. (감사 위험 증가)']],romanceCheck)}romanceCheck()};
   say([['kims',reply]],after)},'pink']))}
@@ -557,7 +557,7 @@ function settle(){const m=[];
  if(S.cash<0&&S.lastContract){const a=S.lastContract*.8;S.cash+=a;S.loanBal=a*1.03;S.lastContract=0;usePol('network');m.push(`🏦 자금이 바닥나 최근 계약서를 근거로 <b>네트워크론 ${fmt(a)}</b>을 받았어요. 다음 정산 때 이자와 함께 갚아야 해요.`)}
  if(S.cash<0)return say([['sys',`💸 자금이 ${fmt(S.cash)}… 더는 버틸 수 없어요.`]],()=>ending('bankrupt'));
 const post=[];
- if(nt>old&&nt>(S.tierMax||0)){S.tierMax=nt;const L={1:'중소기업 승급 축하드려요! 이제 <b>중소기업자간 경쟁제품</b> 시장이 사장님 무대예요.',2:'중견기업이라니! 처음 공방에서 뵌 게 엊그제 같은데… 대형 공고에도 도전해 보세요.',3:'대기업… 진짜 해내셨네요. 이제 협력업체와의 <b>상생</b>도 꼭 챙겨주세요. 약속!'};post.push(d=>say([['kims',L[nt]]],d))}
+ if(nt>old&&nt>(S.tierMax||0)){S.tierMax=nt;const L={1:'중소기업 승급 축하드려요! 이제 <b>중소기업자간 경쟁제품</b> 시장이 사장님 무대예요.',2:'중견기업이라니! 처음 작은 공장에서 뵌 게 엊그제 같은데… 대형 공고에도 도전해 보세요.',3:'대기업… 진짜 해내셨네요. 이제 협력업체와의 <b>상생</b>도 꼭 챙겨주세요. 약속!'};post.push(d=>say([['kims',L[nt]]],d))}
  if(S.turn%2===1&&S.rep>=70&&S.wins>=3)post.push(d=>{S.rep=clamp(S.rep+5,0,100);S.integ=clamp(S.integ+3,0,100);sfx.win();say([['news',`<b>🏆 ${2020+Math.floor(S.turn/2)} 올해의 우수조달기업 시상식</b><br>${S.name}이(가) 성실 납품 기업으로 표창을 받았어요! 신뢰 +5, 청렴 +3`],['kims','무대 위 사장님, 완전 멋있었어요! 사진 찍어뒀어요. 업무용이에요, 업무용!']],d)});
  if(S.turn%2===1){m.unshift(headline(old,nt));S.yearBest=null;S.yearWins0=S.wins}
  if(S.mas&&S.turn%2===1&&!S.masNew)post.push(negotiation);S.masNew=false;
@@ -574,7 +574,7 @@ function leniency(done){dict('자진신고감면');
   say([['sys','…아직은 조용해요. 하지만 조사는 계속될지도 몰라요.']],done)}]])}
 // 하반기 정산 맨 위에 올해 회사 기사 한 줄
 function headline(old,nt){const y=2020+Math.floor(S.turn/2),b=S.yearBest,nm=S.name,wins=S.wins-(S.yearWins0||0);let h;
- if(nt>old)h=`${nm}, ${TIER[nt].n} 진입… "작은 공방에서 시작했습니다"`;
+ if(nt>old)h=`${nm}, ${TIER[nt].n} 진입… "작은 공장에서 시작했습니다"`;
  else if(b&&b.price>=5)h=`${nm}, ${b.ag} '${b.item}' ${fmt(b.price)} 수주… 올해 ${wins}건 낙찰`;
  else if(b)h=pick([`${b.ag}에 ${nm} 선풍기 납품… "소리가 거의 안 나요"`,`${nm}, '${b.item}' 납품 완료… 올해 ${wins}건 낙찰`]);
  else h=pick([`${nm}, 올해는 숨 고르기… "내년엔 다릅니다"`,`나라장터 경쟁 치열… ${nm} 올해 낙찰 0건`]);
@@ -616,9 +616,9 @@ const FIXED={
   [`🤝 직원들을 고용 승계한다 (${fmt(cst(.2))})`,()=>{S.cash-=cst(.2);S.q=clamp(S.q+8,0,100);S.t=clamp(S.t+5,0,100);S.integ=clamp(S.integ+5,0,100);say([['rival','…고맙네. 자넨 처음부터 실력으로 붙는 사람이었지.'],['kims','방금 소식 들었어요. 사장님, 이런 게 진짜 상생이에요.']],next)},'pri'],
   [`🏭 회사를 인수한다 (${fmt(cst(.6))})`,()=>{S.cash-=cst(.6);S.stock+=TIER[S.tier].buy*3;S.q=clamp(S.q+5,0,100);S.rep=clamp(S.rep+5,0,100);say([['rival','공장이랑 원자재 재고까지 다 넘기지. 잘 키워주게.'],['sys',`원자재 재고 +${TIER[S.tier].buy*3}, 품질 +5, 신뢰 +5`]],next)}],
   ['🙅 냉정하게 거절한다',()=>say([['rival','…그래. 경쟁이란 원래 그런 거지.']],next)]]),
- 19:next=>{say([['news','<b>📋 조달청 인사 소식</b><br>김주무관이 <b>혁신조달 업무</b> 담당으로 발령받았어요!'],['kims','사장님, 저 꿈이 하나 있어요.'],['kims','2050년쯤엔 AI가 담합도 다 잡아내고, 동네 작은 공방도 세계 공공시장에 바로 납품하는 조달청. 그런 걸 만들고 싶어요.'],['me','그 첫 번째 납품업체, 우리 회사가 할게요.']],next)}};
+ 19:next=>{say([['news','<b>📋 조달청 인사 소식</b><br>김주무관이 <b>혁신조달 업무</b> 담당으로 발령받았어요!'],['kims','사장님, 저 꿈이 하나 있어요.'],['kims','2050년쯤엔 AI가 담합도 다 잡아내고, 동네 작은 공장도 세계 공공시장에 바로 납품하는 조달청. 그런 걸 만들고 싶어요.'],['me','그 첫 번째 납품업체, 우리 회사가 할게요.']],next)}};
 const RANDOM=[
- iev('공방 화재','🔥','작업장에 불이 났어요! 다행히 다친 사람은 없지만 수리비가 들어요.',()=>{const c=cst(.1);S.cash-=c;log('화재 수리비 -'+fmt(c))}),
+ iev('공장 화재','🔥','작업장에 불이 났어요! 다행히 다친 사람은 없지만 수리비가 들어요.',()=>{const c=cst(.1);S.cash-=c;log('화재 수리비 -'+fmt(c))}),
  iev('장인 입사','👷','30년 경력 모터 장인이 합류했어요! 품질 +8',()=>{S.q=clamp(S.q+8,0,100)}),
  iev('엔지니어 이직','🧳','핵심 엔지니어가 경쟁사로 떠났어요… 기술 -6',()=>{S.t=clamp(S.t-6,0,100)}),
  ev('언론 호평','📺','"교실 선풍기의 숨은 강자" 기사가 났어요! 신뢰 +10',()=>{S.rep=clamp(S.rep+10,0,100)}),
@@ -643,7 +643,7 @@ const RANDOM=[
 function finalEnding(){let id='ordinary';
  // 엔딩 규모는 최고 도달 규모 기준(말기에 강등돼도 유지), 글로벌은 해외 낙찰 2건 이상
  const tm=Math.max(S.tier,S.tierMax||0);if(tm===3&&(S.ow||0)>=2)id='global';else if(tm===3)id='chaebol';else if(S.innov&&S.t>=75)id='innovation';else if(S.tier<=1&&S.excellent&&S.mas)id='artisan';else if(S.tier===2)id='midsize';
- // 사업 대신 사랑을 택한 루트: 동네 공방 + 커플이면 연애 엔딩이 메인
+ // 사업 대신 사랑을 택한 루트: 동네 공장 + 커플이면 연애 엔딩이 메인
  if(id==='ordinary'&&S.romance==='declared'&&S.aff>=100)id='love';
  ending(id)}
 function ending(id){const ids=[id];

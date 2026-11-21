@@ -25,6 +25,8 @@ const SC={
  '7':()=>{demoState();S.turn=13;S.halfRev=12;S.rev=[2,10];S.wins=12;S.yearWins0=8;S.yearBest={item:'초등학교 천장형 선풍기 일괄',ag:'한빛시 교육청',price:3.42};S.graceUsed=true;settle()},
  '8':()=>{demoState();Object.assign(S,{turn:20,tier:3,tierMax:3,ow:3,global:true,cash:84.2,total:284,wins:31,romance:'declared',aff:100,integ:93,collusion:0,polUsed:Object.fromEntries(Object.keys(POL).slice(0,15).map(k=>[k,1]))});finalEnding()},
  '9':()=>{demoState();Object.assign(S,{turn:20,tier:0,tierMax:1,romance:'declared',aff:100,integ:84,cash:3.1,total:18,wins:9,excellent:false,polUsed:{nara:1,yega:1,sme_priority:1,conflict:1,mas:1}});finalEnding()}};
+// ?scene=번호 로 열면 그 장면부터 (캡처용)
+setTimeout(()=>{const q=new URLSearchParams(location.search).get('scene');if(q&&SC[q])SC[q]()},0);
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;const f=SC[e.key];if(f){e.preventDefault();f()}});
 `;
 const re = /title\(\);\r?\n<\/script>/;
