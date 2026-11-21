@@ -213,7 +213,7 @@ const ENDS={
 
 // ---------- 상태 ----------
 let S=null;
-function newGame(name){S={name:name||'시원공방',turn:0,dpc:false,cash:2,q:25,t:20,integ:70,rep:20,aff:0,affStage:0,romance:null,stock:0,mat:100,matHist:[100],release:0,rev:[],halfRev:0,tier:0,grace:0,graceUsed:false,disguise:false,warned:false,wins:0,total:0,mas:false,excellent:false,innov:false,global:false,green:false,collusion:0,aiAudit:false,innovReq:75,recT:0,polUsed:{},notices:[],ap:2,bidDone:false,log:[]}}
+function newGame(name){S={name:name||'시원전기',turn:0,dpc:false,cash:2,q:25,t:20,integ:70,rep:20,aff:0,affStage:0,romance:null,stock:0,mat:100,matHist:[100],release:0,rev:[],halfRev:0,tier:0,grace:0,graceUsed:false,disguise:false,warned:false,wins:0,total:0,mas:false,excellent:false,innov:false,global:false,green:false,collusion:0,aiAudit:false,innovReq:75,recT:0,polUsed:{},notices:[],ap:2,bidDone:false,log:[]}}
 const isSME=()=>S.tier<=1||S.grace>0||S.disguise;
 // 적격심사 점수 = 품질 + 신인도 가점(신뢰÷10, 최대 +10)
 const qScore=()=>Math.round(S.q+S.rep/10);
@@ -272,7 +272,7 @@ function title(){S=null;const sv=store.get('pps_save',null),cnt=(o,t)=>[Object.k
  <div class="progs">${prog('🏆 엔딩',cnt(col.end,ENDS))}${prog('📖 조달도감',cnt(col.dict,DICT))}${prog('📘 정책도감',cnt(col.pol,POL))}${prog('🎖️ 칭호',cnt(col.ach,ACH))}</div></div>
  <p class="foot">2026 조달청 AI 게임·콘텐츠 공모전 출품작 · AI(Claude)를 활용해 제작<br>등장하는 기관·업체·인물과 2027년 이후 사건은 가상이며, 제도는 게임용으로 단순화했어요.<br>선풍기 같은 소액 물품은 실제론 종합쇼핑몰·학교장터(S2B)에서 많이 사요. 게임에선 입찰 체험을 위해 공고로 만들었어요.</p>`,false)}
 function nameStep(){const go=()=>{newGame(document.getElementById('nm').value.trim());intro()};
- render(()=>dlg('sys','📝 <b>나라장터 업체 등록</b><br>사장님 회사 이름을 입력해 주세요.<br><input id="nm" class="nm-in" maxlength="10" value="시원공방">',B('등록하기 ▶',go,'pri')+' '+B('◀ 처음으로',title)),false);
+ render(()=>dlg('sys','📝 <b>나라장터 업체 등록</b><br>사장님 회사 이름을 입력해 주세요.<br><input id="nm" class="nm-in" maxlength="10" value="시원전기">',B('등록하기 ▶',go,'pri')+' '+B('◀ 처음으로',title)),false);
  const el=document.getElementById('nm');el.focus();el.select();el.onkeydown=e=>{if(e.key==='Enter')go()}}
 function help(){render(()=>`<section class="panel"><h2>❓ 게임 방법</h2>
  <p>🌀 당신은 작은 선풍기 공장 사장님. <b>2020년부터 2029년까지(20턴, 1턴=반기)</b> 공공조달로 회사를 키우세요.</p>

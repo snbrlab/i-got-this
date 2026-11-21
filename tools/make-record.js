@@ -6,7 +6,7 @@ const scenes = `
 // ---------- 녹화용 장면 ----------
 const DEMO=true;
 try{localStorage.removeItem('pps_save')}catch(e){}
-function demoState(){newGame('시원공방');Object.assign(S,{turn:12,cash:6.4,q:62,t:55,integ:84,rep:66,aff:30,spark:true,affStage:1,tier:1,tierMax:1,wins:8,total:24,stock:150,mas:true,dpc:true,mat:112,matHist:[100,96,104,125,150,141,128,122,117,112,108,112],sajung:[1.0042,.9968,1.0011,.9987,1.0023],lastOffer:12,talks:5});
+function demoState(){newGame('시원전기');Object.assign(S,{turn:12,cash:6.4,q:62,t:55,integ:84,rep:66,aff:30,spark:true,affStage:1,tier:1,tierMax:1,wins:8,total:24,stock:150,mas:true,dpc:true,mat:112,matHist:[100,96,104,125,150,141,128,122,117,112,108,112],sajung:[1.0042,.9968,1.0011,.9987,1.0023],lastOffer:12,talks:5});
  S.log=['교실 공기순환기 구매·설치 계약 3.21억 → 순이익 0.52억','🛠️ 품질관리 완료'];
  S.notices=[{type:'sme',item:'교실 공기순환기 구매·설치',ag:'한빛시 교육청',base:3.42,comp:9},{type:'general',item:'체육관 대형 공기순환기 구매·설치',ag:'은하구 국립대학교',base:8.7,comp:11},{type:'sme',item:'무더위쉼터 서큘레이터 구매',ag:'솔내군 시청',base:1.85,comp:6}]}
 // 투찰하면 하한선에 칼같이 붙여 낙찰되는 결과가 나올 때까지 다시 추첨 (녹화용)
